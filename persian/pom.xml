@@ -6,9 +6,9 @@
         <artifactId>project</artifactId>
         <version>13-SNAPSHOT</version>
     </parent>
-    <artifactId>repos</artifactId>
+    <artifactId>persian</artifactId>
     <packaging>war</packaging>
-    <name>Manorrock Maven Repos</name>
+    <name>Manorrock Persian</name>
     <build>
         <finalName>repos</finalName>
         <plugins>

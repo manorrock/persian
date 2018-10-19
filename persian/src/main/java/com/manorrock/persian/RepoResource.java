@@ -23,10 +23,8 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.maven.repos;
+package com.manorrock.persian;
 
-import com.manorrock.repos.model.DirectoryModel;
-import com.manorrock.repos.model.FileModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -86,19 +84,19 @@ public class RepoResource {
         if (rootDirectoryFilename == null) {
             try {
                 InitialContext initialContext = new InitialContext();
-                rootDirectoryFilename = (String) initialContext.lookup("java:comp/env/mavenReposDirectory");
+                rootDirectoryFilename = (String) initialContext.lookup("java:comp/env/rootDirectory");
             } catch (NamingException ne) {
                 rootDirectoryFilename = null;
             }
         }
 
         if (rootDirectoryFilename == null || "".equals(rootDirectoryFilename.trim())) {
-            rootDirectoryFilename = System.getenv("MAVEN_REPOS_DIRECTORY");
+            rootDirectoryFilename = System.getenv("ROOT_DIRECTORY");
         }
 
         if (rootDirectoryFilename == null || "".equals(rootDirectoryFilename.trim())) {
-            rootDirectoryFilename = System.getProperty("MAVEN_REPOS_DIRECTORY",
-                    System.getProperty("user.home") + "/.manorrock/maven/repos");
+            rootDirectoryFilename = System.getProperty("ROOT_DIRECTORY",
+                    System.getProperty("user.home") + "/.manorrock/persian");
         }
 
         rootDirectory = new File(rootDirectoryFilename);

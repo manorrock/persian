@@ -23,58 +23,16 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.repos.model;
+package com.manorrock.persian;
 
-import java.util.ArrayList;
-import java.util.List;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import org.junit.Test;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 /**
- * The JUnit test for the DirectoryModel class.
+ * The Persian application.
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class DirectoryModelTest {
-
-    /**
-     * Test getFiles method.
-     */
-    @Test
-    public void testGetFiles() {
-        DirectoryModel model = new DirectoryModel();
-        assertNull(model.getFiles());
-    }
-
-    /**
-     * Test getName method.
-     */
-    @Test
-    public void testGetName() {
-        DirectoryModel model = new DirectoryModel();
-        assertNull(model.getName());
-    }
-
-    /**
-     * Test setFiles method.
-     */
-    @Test
-    public void testSetFiles() {
-        List<FileModel> files = new ArrayList<>();
-        DirectoryModel model = new DirectoryModel();
-        model.setFiles(files);
-        assertNotNull(model.getFiles());
-    }
-
-    /**
-     * Test setName method.
-     */
-    @Test
-    public void testSetName() {
-        DirectoryModel model = new DirectoryModel();
-        model.setName("TheName");
-        assertEquals("TheName", model.getName());
-    }
+@ApplicationPath("repo")
+public class PersianApplication extends Application {
 }

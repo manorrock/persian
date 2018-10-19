@@ -23,40 +23,26 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.repos.model;
+package com.manorrock.persian;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * A directory model.
+ * A file model.
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@XmlRootElement(name = "directory")
-public class DirectoryModel implements Serializable {
+public class FileModel implements Serializable {
 
     /**
-     * Stores the files.
+     * Stores the directory flag.
      */
-    private List<FileModel> files;
+    private boolean directory;
 
     /**
-     * Stores the directory name.
+     * Stores the name.
      */
     private String name;
-
-    /**
-     * Get the files.
-     *
-     * @return the files.
-     */
-    @XmlElement(name = "file", type = FileModel.class)
-    public List<FileModel> getFiles() {
-        return files;
-    }
 
     /**
      * Get the name.
@@ -68,12 +54,21 @@ public class DirectoryModel implements Serializable {
     }
 
     /**
-     * Set the files.
+     * Is directory.
      *
-     * @param files the files.
+     * @return true if a directory, false otherwise.
      */
-    public void setFiles(List<FileModel> files) {
-        this.files = files;
+    public boolean isDirectory() {
+        return directory;
+    }
+
+    /**
+     * Set directory.
+     *
+     * @param directory the directory flag.
+     */
+    public void setDirectory(boolean directory) {
+        this.directory = directory;
     }
 
     /**
