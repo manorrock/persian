@@ -1,6 +1,3 @@
-/model/nbproject/
-/model/target/
-/repos/nb-configuration.xml
-/repos/target/
-/target/
-/persian/target/
+nb-configuration.xml
+nbproject
+target
