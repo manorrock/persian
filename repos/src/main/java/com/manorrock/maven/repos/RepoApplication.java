@@ -33,6 +33,6 @@ import javax.ws.rs.core.Application;
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@ApplicationPath("")
+@ApplicationPath("repo")
 public class RepoApplication extends Application {
 }

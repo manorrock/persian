@@ -25,7 +25,6 @@
         </dependencies>
     </dependencyManagement>
     <modules>
-        <module>model</module>
         <module>repos</module>
     </modules>
     <properties>
