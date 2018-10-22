@@ -224,19 +224,24 @@ public class RepoResource {
             @PathParam("version") String version,
             @PathParam("packaging") String packaging) {
 
-        return (OutputStream outputStream) -> {
-            File repoDir = new File(rootDirectory, repositoryName);
-            File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
-                    + File.separator + artifactId + "-" + version + "." + packaging);
-            try (InputStream inputStream = new FileInputStream(file)) {
-                int nextByte;
-                while ((nextByte = inputStream.read()) != -1) {
-                    outputStream.write(nextByte);
+        File repoDir = new File(rootDirectory, repositoryName);
+        File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
+                + File.separator + artifactId + "-" + version + "." + packaging);
+        
+        if (file.exists()) {
+            return (OutputStream outputStream) -> {
+                try (InputStream inputStream = new FileInputStream(file)) {
+                    int nextByte;
+                    while ((nextByte = inputStream.read()) != -1) {
+                        outputStream.write(nextByte);
+                    }
+                    outputStream.flush();
+                    outputStream.close();
                 }
-                outputStream.flush();
-                outputStream.close();
-            }
-        };
+            };
+        } else {
+            throw new WebApplicationException(404);
+        }
     }
 
     /**
