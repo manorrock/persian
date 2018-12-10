@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 services:
   persian:
     image: manorrock/persian:arm32v6
