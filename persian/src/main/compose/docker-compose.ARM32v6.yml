@@ -1,8 +1,0 @@
-version: "2"
-services:
-  persian:
-    image: manorrock/persian:arm32v6
-    ports:
-     - "8080:8080"
-    volumes:
-     - ./data:/mnt
