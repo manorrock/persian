@@ -2,7 +2,13 @@
 
 This project delivers a minimal Maven repository server.
 
-## Using the WAR file to deploy the repository server
+## Using the Docker image to deploy the Maven repository server.
+
+```
+  docker run --rm -d -p 8080:8080 -v $PWD:/mnt manorrock/persian
+```
+
+## Using the WAR file to deploy the Maven repository server
 
 1. Download the WAR file.
 2. Set the data directory to:
