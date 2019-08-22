@@ -17,6 +17,33 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>com.manorrock.persian</groupId>
+                            <artifactId>persian</artifactId>
+                            <version>${project.version}</version>
+                            <type>war</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                            <destFileName>ROOT.war</destFileName>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <executions>
@@ -57,6 +84,13 @@
             <artifactId>piranha</artifactId>
             <version>4.0.13.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.manorrock.persian</groupId>
+            <artifactId>persian</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+            <type>war</type>
         </dependency>
     </dependencies>
 </project>
