@@ -40,6 +40,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DirectoryModel implements Serializable {
 
     /**
+     * Stores the serial version UID.
+     */
+    private static final long serialVersionUID = 9123973478589393249L;
+
+    /**
      * Stores the files.
      */
     private List<FileModel> files;
