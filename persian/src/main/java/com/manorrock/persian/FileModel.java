@@ -36,6 +36,11 @@ import java.io.Serializable;
 public class FileModel implements Serializable {
 
     /**
+     * Stores the serial version UID.
+     */
+    private static final long serialVersionUID = 4003044105012813335L;
+
+    /**
      * Stores the directory flag.
      */
     private boolean directory;
