@@ -460,9 +460,10 @@ public class RepoResource {
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(data);
-                fileOutputStream.flush();
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                    fileOutputStream.write(data);
+                    fileOutputStream.flush();
+                }
             } catch (IOException ex) {
                 throw new WebApplicationException(ex, 500);
             }
@@ -503,9 +504,10 @@ public class RepoResource {
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(data);
-                fileOutputStream.flush();
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                    fileOutputStream.write(data);
+                    fileOutputStream.flush();
+                }
             } catch (IOException ex) {
                 throw new WebApplicationException(ex, 500);
             }
@@ -548,9 +550,10 @@ public class RepoResource {
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(data);
-                fileOutputStream.flush();
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                    fileOutputStream.write(data);
+                    fileOutputStream.flush();
+                }
             } catch (IOException ex) {
                 throw new WebApplicationException(ex, 500);
             }
@@ -590,9 +593,10 @@ public class RepoResource {
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(data);
-                fileOutputStream.flush();
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                    fileOutputStream.write(data);
+                    fileOutputStream.flush();
+                }
             } catch (IOException ex) {
                 throw new WebApplicationException(ex, 500);
             }
@@ -632,9 +636,10 @@ public class RepoResource {
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(data);
-                fileOutputStream.flush();
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                    fileOutputStream.write(data);
+                    fileOutputStream.flush();
+                }
             } catch (IOException ex) {
                 throw new WebApplicationException(ex, 500);
             }
@@ -674,9 +679,10 @@ public class RepoResource {
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                fileOutputStream.write(data);
-                fileOutputStream.flush();
+                try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                    fileOutputStream.write(data);
+                    fileOutputStream.flush();
+                }
             } catch (IOException ex) {
                 throw new WebApplicationException(ex, 500);
             }
