@@ -26,6 +26,7 @@
     </dependencyManagement>
     <modules>
         <module>persian</module>
+        <module>persian-standalone</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

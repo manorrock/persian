@@ -24,25 +24,47 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.persian;
+package com.manorrock.persian.standalone;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import com.manorrock.piranha.api.WebApplication;
+import com.manorrock.piranha.runner.war.WarRunner;
+import javax.servlet.ServletRegistration;
 
 /**
- * The Persian application.
+ * The Persian Standalone boot strapper.
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@ApplicationPath("repo")
-public class PersianApplication extends Application {
+public class PersianStandalone {
 
-    @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
-        classes.add(RepoResource.class);
-        return classes;
+    /**
+     * Execute method.
+     */
+    public void execute() {
+        WarRunner runner = new WarRunner();
+        WebApplication webApplication = runner.configure(new String[]{
+            "--webapp",
+            System.getProperty("WEBAPP_DIRECTORY", "webapp")
+        });
+        webApplication.addServletMapping("Jersey", "/repo/*");
+        webApplication.addServlet("Jersey", "org.glassfish.jersey.servlet.ServletContainer");
+        ServletRegistration registration = webApplication.getServletRegistration("Jersey");
+        registration.setInitParameter("javax.ws.rs.Application", "com.manorrock.persian.PersianApplication");
+        Thread thread = new Thread(runner);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException ie) {
+        }
+    }
+
+    /**
+     * Main method.
+     *
+     * @param arguments the arguments.
+     */
+    public static void main(String[] arguments) {
+        PersianStandalone standalone = new PersianStandalone();
+        standalone.execute();
     }
 }
