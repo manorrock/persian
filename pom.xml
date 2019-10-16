@@ -27,6 +27,7 @@
     <modules>
         <module>persian</module>
         <module>persian-standalone</module>
+        <module>persian-docker</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
