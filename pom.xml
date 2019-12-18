@@ -18,16 +18,14 @@
                 <version>4.12</version>
             </dependency>
             <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-web-api</artifactId>
-                <version>8.0</version>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-web-api</artifactId>
+                <version>8.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
         <module>persian</module>
-        <module>persian-standalone</module>
-        <module>persian-docker</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

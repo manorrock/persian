@@ -82,14 +82,14 @@ public class RepoResource {
      */
     @PostConstruct
     public void initialize() {
-        if (rootDirectoryFilename == null) {
-            try {
-                InitialContext initialContext = new InitialContext();
-                rootDirectoryFilename = (String) initialContext.lookup("java:comp/env/rootDirectory");
-            } catch (NamingException ne) {
-                rootDirectoryFilename = null;
-            }
-        }
+//        if (rootDirectoryFilename == null) {
+//            try {
+//                InitialContext initialContext = new InitialContext();
+//                rootDirectoryFilename = (String) initialContext.lookup("java:comp/env/rootDirectory");
+//            } catch (NamingException ne) {
+//                rootDirectoryFilename = null;
+//            }
+//        }
 
         if (rootDirectoryFilename == null || "".equals(rootDirectoryFilename.trim())) {
             rootDirectoryFilename = System.getenv("ROOT_DIRECTORY");
@@ -115,6 +115,7 @@ public class RepoResource {
     @GET
     @Path("")
     public Response directory0(@PathParam("repositoryName") String repositoryName) {
+        System.out.println("directory0 with " + repositoryName);
         Response result;
 
         try {
