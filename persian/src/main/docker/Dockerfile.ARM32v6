@@ -1,0 +1,4 @@
+FROM piranhacloud/server:arm32v6-snapshot
+COPY target/*.war /usr/local/piranha/webapps/ROOT.war
+WORKDIR /usr/local/piranha/bin
+ENV ROOT_DIRECTORY=/mnt
