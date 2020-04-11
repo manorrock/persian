@@ -1,7 +1,8 @@
-FROM manorrock/raspbian:arm32v6
+FROM balenalib/raspberry-pi
 RUN ["cross-build-start"]
 ENV PAYARA_VERSION=5.201
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y curl gzip libfontconfig1 libfreetype6 tar && \
     cd /usr/local && \
     curl --insecure -L -O https://cdn.azul.com/zulu-embedded/bin/zulu11.35.36-ca-jdk11.0.5-linux_aarch32hf.tar.gz && \

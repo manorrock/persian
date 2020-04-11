@@ -1,6 +1,7 @@
-FROM manorrock/debian
+FROM debian
 ENV PAYARA_VERSION=5.201
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y curl tar gzip && \
     cd /usr/local && \
     curl --insecure -L -O https://cdn.azul.com/zulu/bin/zulu11.35.15-ca-jdk11.0.5-linux_x64.tar.gz && \
