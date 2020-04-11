@@ -1,5 +1,5 @@
 FROM manorrock/zulu:11.0.5
-ENV PAYARA_VERSION=5.194
+ENV PAYARA_VERSION=5.201
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -O https://repo.maven.apache.org/maven2/fish/payara/extras/payara-micro/$PAYARA_VERSION/payara-micro-$PAYARA_VERSION.jar && \
