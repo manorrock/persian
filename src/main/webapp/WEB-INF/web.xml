@@ -25,6 +25,7 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+    <!-- not supported in Piranha 20.4.0 -->
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
@@ -32,4 +33,7 @@
         <error-code>404</error-code>
         <location>/404.xhtml</location>
     </error-page>
+    <listener>
+        <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+    </listener>
 </web-app>
