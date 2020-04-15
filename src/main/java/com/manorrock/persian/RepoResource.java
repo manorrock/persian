@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2019 Manorrock.com. All Rights Reserved.
+ * Copyright (c) 2002-2020 Manorrock.com. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -34,10 +34,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
+import static java.util.logging.Level.INFO;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -82,22 +81,14 @@ public class RepoResource {
      */
     @PostConstruct
     public void initialize() {
+        rootDirectoryFilename = System.getenv("REPOSITORIES_DIRECTORY");
         if (rootDirectoryFilename == null) {
-            try {
-                InitialContext initialContext = new InitialContext();
-                rootDirectoryFilename = (String) initialContext.lookup("java:comp/env/rootDirectory");
-            } catch (NamingException ne) {
-                rootDirectoryFilename = null;
-            }
+            rootDirectoryFilename = System.getProperty("REPOSITORIES_DIRECTORY",
+                    System.getProperty("user.home") + "/.manorrock/persian/repos");
         }
 
-        if (rootDirectoryFilename == null || "".equals(rootDirectoryFilename.trim())) {
-            rootDirectoryFilename = System.getenv("ROOT_DIRECTORY");
-        }
-
-        if (rootDirectoryFilename == null || "".equals(rootDirectoryFilename.trim())) {
-            rootDirectoryFilename = System.getProperty("ROOT_DIRECTORY",
-                    System.getProperty("user.home") + "/.manorrock/persian");
+        if (LOGGER.isLoggable(INFO)) {
+            LOGGER.log(INFO, "Repositories directory: {0}", rootDirectoryFilename);
         }
 
         rootDirectory = new File(rootDirectoryFilename);
@@ -115,7 +106,6 @@ public class RepoResource {
     @GET
     @Path("")
     public Response directory0(@PathParam("repositoryName") String repositoryName) {
-        System.out.println("directory0 with " + repositoryName);
         Response result;
 
         try {
