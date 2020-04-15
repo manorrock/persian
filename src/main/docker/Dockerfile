@@ -15,5 +15,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 ENV PATH=$PATH:/usr/local/jdk/bin
 WORKDIR /usr/local/piranha
-CMD ["java", "-jar", "piranha-micro.jar", "--war", "ROOT.war"]
+CMD ["java", "-Djava.util.logging.config.file=/usr/local/piranha/logging.properties", "-jar", "piranha-micro.jar", "--war", "ROOT.war"]
+COPY src/main/docker/logging.properties /usr/local/piranha/logging.properties
 COPY target/persian.war /usr/local/piranha/ROOT.war
