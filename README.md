@@ -38,12 +38,12 @@ Create a `settings.xml` file with the content from the snippet below:
                     <releases>
                         <enabled>true</enabled>
                         <updatePolicy>always</updatePolicy>
-                        <checksumPolicy>warn</checksumPolicy>
+                        <checksumPolicy>ignore</checksumPolicy>
                     </releases>
                     <snapshots>
-                        <enabled>false</enabled>
-                        <updatePolicy>never</updatePolicy>
-                        <checksumPolicy>fail</checksumPolicy>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>ignore</checksumPolicy>
                     </snapshots>
                     <url>http://localhost:8080/repositories</url>
                     <layout>default</layout>
