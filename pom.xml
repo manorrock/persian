@@ -34,9 +34,21 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>cloud.piranha.rest</groupId>
-            <artifactId>piranha-rest-jersey</artifactId>
-            <version>20.4.0</version>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.faces</artifactId>
+            <version>2.3.9</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.30.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld.servlet</groupId>
+            <artifactId>weld-servlet-shaded</artifactId>
+            <version>3.1.3.Final</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -46,22 +58,16 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cloud.piranha.cdi</groupId>
-            <artifactId>piranha-cdi-weld</artifactId>
+            <groupId>org.omnifaces.oyena</groupId>
+            <artifactId>oyena-action</artifactId>
             <version>20.4.0</version>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cloud.piranha.faces</groupId>
-            <artifactId>piranha-faces-myfaces</artifactId>
-            <version>20.4.0</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.websocket</groupId>
-            <artifactId>jakarta.websocket-api</artifactId>
-            <version>1.1.2</version>
-            <scope>runtime</scope>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>4.0.3</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
