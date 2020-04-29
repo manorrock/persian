@@ -5,8 +5,8 @@
 Security fixes for customers without a support contract are ONLY applied to the
 master branch and delivered as part of the regular release cycle.
 
-If you want a security on an already released version please consider buying a
-support contract.
+If you want a security fix on an already released version please consider buying a
+support contract. Contact sales@manorrock.com for more information.
 
 ## Reporting a Vulnerability
 
