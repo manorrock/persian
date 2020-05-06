@@ -25,7 +25,7 @@ jobs:
         TAG=${GITHUB_REF}
         INDEX=${TAG%v*}
         VERSION=${TAG:${#INDEX}}
-        docker build -f src/main/docker/Dockerfile.amd64 -t manorrock/persian:$VERSION .
+        docker build -f src/main/docker/Dockerfile -t manorrock/persian:$VERSION .
         docker push manorrock/persian:$VERSION
     - name: Build ARM32v6 image
       run: |
