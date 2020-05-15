@@ -1,4 +1,4 @@
-name: docker-snapshot
+name: nightly
 on:
   schedule:
   - cron: "0 12 * * *"
