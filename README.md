@@ -74,6 +74,12 @@ Uploaded to default: http://localhost:8080/repositories/test/com/manorrock/persi
 
 Congratulations you are now running Manorrock Persian!
 
+## More information about deploying to a Maven repository
+
+See [Deploy](https://books.sonatype.com/mvnref-book/reference/lifecycle-sect-common-goals.html#lifecycle-sect-deploy-phase)
+at the Maven: The Complete Reference. Or have a look at the [deploy:deploy](https://maven.apache.org/plugins/maven-deploy-plugin/deploy-mojo.html)
+goal of the Maven Deploy plugin.
+
 ## Testing SNAPSHOT versions
 
 Every night we push a SNAPSHOT version to Docker Hub. If you want to give the
