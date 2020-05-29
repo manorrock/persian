@@ -26,11 +26,26 @@
  */
 package com.manorrock.persian.datastore;
 
+import java.io.File;
+
 /**
- * The data store API.
+ * The file-based data store.
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public interface DataStore {
+public class FileDataStore implements DataStore {
     
+    /**
+     * Stores the base directory.
+     */
+    private final File baseDirectory;
+
+    /**
+     * Constructor.
+     * 
+     * @param baseDirectory the base directory.
+     */
+    public FileDataStore(String baseDirectory) {
+        this.baseDirectory = new File(baseDirectory);
+    }
 }

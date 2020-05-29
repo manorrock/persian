@@ -24,13 +24,32 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.persian.datastore;
+package com.manorrock.persian;
+
+import com.manorrock.persian.datastore.FileDataStore;
 
 /**
- * The data store API.
+ * A local Maven repository.
  * 
- * @author Manfred Riem (mriem@manorrock.com)
+ * <p>
+ *  The local Maven repository is backed by a file data store.
+ * </p>
+ * 
+ * @author manfred
  */
-public interface DataStore {
+public class LocalMavenRepository implements MavenRepository {
     
+    /**
+     * Stores the data store.
+     */
+    private final FileDataStore dataStore;
+    
+    /**
+     * Constructor.
+     * 
+     * @param baseDirectory the base directory.
+     */
+    public LocalMavenRepository(String baseDirectory) {
+        dataStore = new FileDataStore(baseDirectory);
+    }
 }
