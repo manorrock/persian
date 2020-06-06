@@ -84,7 +84,7 @@ public class RepoResource {
         rootDirectoryFilename = System.getenv("REPOSITORIES_DIRECTORY");
         if (rootDirectoryFilename == null) {
             rootDirectoryFilename = System.getProperty("REPOSITORIES_DIRECTORY",
-                    System.getProperty("user.home") + "/.manorrock/persian/repos");
+                    System.getProperty("user.home") + "/.manorrock/persian/repositories");
         }
 
         if (LOGGER.isLoggable(INFO)) {
