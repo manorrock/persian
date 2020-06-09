@@ -5,13 +5,13 @@ This project delivers you with a Maven repository server.
 ## Deploy the server using Docker
 
 ```
-  docker run --rm -d -p 8080:8080 -v $PWD:/root/.manorrock/persian/repos manorrock/persian:VERSION
+  docker run --rm -d -p 8080:8080 -v $PWD:/root/.manorrock/persian/repositories manorrock/persian:VERSION
 ```
 
 And replace VERSION with the version you want to use.
 
 > _Note_ in the command line above we have mapped the 
-> `/root/.manorrock/persian/repos` directory to point to the current directory so
+> `/root/.manorrock/persian/repositories` directory to point to the current directory so
 > we can persist the Maven repositories outside of the container.
 
 ## Verify the server is up and running
