@@ -1,22 +1,65 @@
+#
+# Use Raspbian
+#
 FROM balenalib/raspberry-pi
-ENV PIRANHA_VERSION=20.4.0
-ENV ZULU_VERSION=zulu11.37.48-ca-jdk11.0.6
+
+#
+# Setup for cross-platform building.
+#
 RUN ["cross-build-start"]
+
+#
+# Update Raspbian and install curl, dnsutils, gnupg2, gzip, 
+# software-properties-common and tar.
+#
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y curl gzip libfontconfig1 libfreetype6 tar && \
-    cd /usr/local && \
-    curl --insecure -L -O https://cdn.azul.com/zulu-embedded/bin/${ZULU_VERSION}-linux_aarch32hf.tar.gz && \
-    tar xfvz ${ZULU_VERSION}-linux_aarch32hf.tar.gz && \
-    mv ${ZULU_VERSION}-linux_aarch32hf jdk && \
-    rm ${ZULU_VERSION}-linux_aarch32hf.tar.gz && \
-    curl --insecure -L -O https://repo1.maven.org/maven2/cloud/piranha/piranha-micro/${PIRANHA_VERSION}/piranha-micro-${PIRANHA_VERSION}-all.jar && \
-    mkdir -p /usr/local/piranha && \
-    mv piranha-micro-${PIRANHA_VERSION}-all.jar /usr/local/piranha/piranha-micro.jar && \
+    apt-get install -y curl dnsutils gnupg2 gzip software-properties-common tar && \
     rm -rf /var/lib/apt/lists/*
+
+#
+# Install Zulu 11.
+#
+RUN cd /usr/local && \
+    curl --insecure -L -O https://cdn.azul.com/zulu-embedded/bin/zulu11.37.48-ca-jdk11.0.6-linux_aarch32hf.tar.gz && \
+    tar xfvz zulu11.37.48-ca-jdk11.0.6-linux_aarch32hf.tar.gz && \
+    mv zulu11.37.48-ca-jdk11.0.6-linux_aarch32hf jdk && \
+    rm zulu11.37.48-ca-jdk11.0.6-linux_aarch32hf.tar.gz
+
+#
+# Setup PATH
+#
 ENV PATH=$PATH:/usr/local/jdk/bin
-WORKDIR /usr/local/piranha
-CMD ["java", "-Djava.util.logging.config.file=/usr/local/piranha/logging.properties", "-jar", "piranha-micro.jar", "--war", "ROOT.war"]
-COPY src/main/docker/logging.properties /usr/local/piranha/logging.properties
-COPY target/persian.war /usr/local/piranha/ROOT.war
+
+#
+# Install Tomcat 9.
+#
+RUN cd /usr/local && \
+    curl --insecure -L -O https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.35/bin/apache-tomcat-9.0.35.tar.gz && \
+    tar xfvz apache-tomcat-9.0.35.tar.gz && \
+    mv apache-tomcat-9.0.35 tomcat && \
+    rm apache-tomcat-9.0.35.tar.gz && \
+    rm -rf tomcat/webapps/*docs* && \
+    rm -rf tomcat/webapps/*examples* && \
+    rm -rf tomcat/webapps/*manager* && \
+    rm -rf tomcat/webapps/ROOT*
+
+#
+# Set work directory.
+#
+WORKDIR /usr/local/tomcat
+
+#
+# Copy Manorrock Persian into Tomcat 9.
+#
+COPY target/persian.war /usr/local/tomcat/webapps/ROOT.war
+
+#
+# End cross platform building.
+#
 RUN ["cross-build-end"]
+
+#
+# Command to start Tomcat with console output.
+#
+CMD ["bin/catalina.sh", "run"]
