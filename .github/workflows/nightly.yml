@@ -21,12 +21,12 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build amd64 image
       run: |
-        docker build -f src/main/docker/Dockerfile -t manorrock/persian:snapshot .
-        docker push manorrock/persian:snapshot
-    - name: Build ARM32v6 image
+        docker build -f src/main/docker/Dockerfile -t manorrock/persian:amd64-snapshot .
+        docker push manorrock/persian:amd64-snapshot
+    - name: Build arm image
       run: |
-        docker build -f src/main/docker/Dockerfile.ARM32v6 -t manorrock/persian:arm32v6-snapshot .
-        docker push manorrock/persian:arm32v6-snapshot
+        docker build -f src/main/docker/Dockerfile.arm -t manorrock/persian:arm-snapshot .
+        docker push manorrock/persian:arm-snapshot
     - name: Push Docker manifest
       run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled

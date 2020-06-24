@@ -25,17 +25,20 @@ jobs:
         TAG=${GITHUB_REF}
         INDEX=${TAG%v*}
         VERSION=${TAG:${#INDEX}}
-        docker build -f src/main/docker/Dockerfile -t manorrock/persian:$VERSION .
-        docker push manorrock/persian:$VERSION
-    - name: Build ARM32v6 image
+        docker build -f src/main/docker/Dockerfile -t manorrock/persian:amd64-$VERSION .
+        docker push manorrock/persian:amd64-$VERSION
+    - name: Build arm image
       run: |
         TAG=${GITHUB_REF}
         INDEX=${TAG%v*}
         VERSION=${TAG:${#INDEX}}
-        docker build -f src/main/docker/Dockerfile.ARM32v6 -t manorrock/persian:arm32v6-$VERSION .
-        docker push manorrock/persian:arm32v6-$VERSION
+        docker build -f src/main/docker/Dockerfile.arm -t manorrock/persian:arm-$VERSION .
+        docker push manorrock/persian:arm-$VERSION
     - name: Push Docker manifest
       run: |
+        TAG=${GITHUB_REF}
+        INDEX=${TAG%v*}
+        VERSION=${TAG:${#INDEX}}
         export DOCKER_CLI_EXPERIMENTAL=enabled
         docker manifest create manorrock/persian:$VERSION \
           manorrock/persian:amd64-$VERSION \
