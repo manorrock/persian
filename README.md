@@ -16,7 +16,9 @@ And replace VERSION with the version you want to use.
 
 ## Verify the server is up and running
 
-Create a `settings.xml` file with the content from the snippet below:
+Create a `settings.xml` file with the content from the snippet below, or rename
+the `settings.xml.template` in the root directory of this project to 
+`settings.xml`:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
