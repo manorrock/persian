@@ -12,7 +12,7 @@
     <h:body>
         <f:view transient="true"/>
         <h1>Manorrock Persian</h1>
-        <ui:repeat var="repository" value="#{indexBean.repositories}">
+        <ui:repeat var="repository" value="#{indexController.repositories}">
             <h:outputText value="#{repository}"/>
         </ui:repeat>
     </h:body>

@@ -32,15 +32,16 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import org.omnifaces.oyena.action.ActionMapping;
 
 /**
  * The index bean.
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Named(value = "indexBean")
+@Named(value = "indexController")
 @RequestScoped
-public class IndexBean {
+public class IndexController {
     
     /**
      * Stores the logger.
@@ -92,5 +93,11 @@ public class IndexBean {
         }
         
         repositories = rootDirectory.list();
-    }    
+    }
+    
+    
+    @ActionMapping("/")
+    public String index() {
+        return "/WEB-INF/ui/index.xhtml";
+    }
 }

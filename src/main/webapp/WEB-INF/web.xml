@@ -20,6 +20,14 @@
             <param-value>com.manorrock.persian.PersianApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+    </servlet>    
+    <servlet>
+        <servlet-name>Oyena Action Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <init-param>
+            <param-name>javax.faces.LIFECYCLE_ID</param-name>
+            <param-value>org.omnifaces.oyena.action.ActionLifecycle</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>Jersey</servlet-name>
@@ -41,7 +49,7 @@
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
-        <location>/404.xhtml</location>
+        <location>/ui/404.xhtml</location>
     </error-page>
     <resource-env-ref>
         <resource-env-ref-name>BeanManager</resource-env-ref-name>
