@@ -34,6 +34,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.io.FileUtils;
 import org.omnifaces.oyena.action.ActionMapping;
 
 /**
@@ -72,12 +73,26 @@ public class ViewController {
     private String repository;
     
     /**
+     * Stores the repository size in kilo bytes.
+     */
+    private double repositorySize;
+    
+    /**
      * Get the repository.
      * 
      * @return the repository.
      */
     public String getRepository() {
         return repository;
+    }
+    
+    /**
+     * Get the repository size.
+     * 
+     * @return the repository size.
+     */
+    public double getRepositorySize() {
+        return repositorySize;
     }
 
     /**
@@ -102,6 +117,8 @@ public class ViewController {
         
         if (request.getParameter("repository") != null) {
             repository = request.getParameter("repository");
+            File repositoryDirectory = new File(rootDirectory, repository);
+            repositorySize = FileUtils.sizeOfDirectory(repositoryDirectory) / 1024;
         }
     }
     
