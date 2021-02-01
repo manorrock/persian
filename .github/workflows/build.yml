@@ -18,20 +18,20 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build amd64 image
       run: |
-        docker build -f Dockerfile.amd64 -t manorrock/persian:amd64-snapshot .
-        docker push manorrock/persian:amd64-snapshot
+        docker build -f Dockerfile.amd64 -t manorrock/persian:amd64-latest .
+        docker push manorrock/persian:amd64-latest
     - name: Build arm32v6 image
       run: |
-        docker build -f Dockerfile.arm32v6 -t manorrock/persian:arm32v6-snapshot .
-        docker push manorrock/persian:arm32v6-snapshot
+        docker build -f Dockerfile.arm32v6 -t manorrock/persian:arm32v6-latest .
+        docker push manorrock/persian:arm32v6-latest
     - name: Push Docker manifest
       run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled
-        docker manifest create manorrock/persian:snapshot \
-          manorrock/persian:amd64-snapshot \
-          manorrock/persian:arm32v6-snapshot
-        docker manifest annotate manorrock/persian:snapshot \
+        docker manifest create manorrock/persian:latest \
+          manorrock/persian:amd64-latest \
+          manorrock/persian:arm32v6-latest
+        docker manifest annotate manorrock/persian:latest \
           manorrock/persian:amd64-snapshot --os linux --arch amd64
-        docker manifest annotate manorrock/persian:snapshot \
+        docker manifest annotate manorrock/persian:latest \
           manorrock/persian:arm32v6-snapshot --os linux --arch arm
-        docker manifest push manorrock/persian:snapshot
+        docker manifest push manorrock/persian:latest
