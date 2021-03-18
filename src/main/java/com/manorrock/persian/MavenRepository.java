@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2020 Manorrock.com. All Rights Reserved.
+ * Copyright (c) 2002-2021 Manorrock.com. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -27,10 +27,55 @@
 package com.manorrock.persian;
 
 /**
- * The API for a Maven repository.
+ * A Maven repository.
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public interface MavenRepository {
+public class MavenRepository {
     
+    /**
+     * Stores the name.
+     */
+    private String name;
+    
+    /**
+     * Stores the size.
+     */
+    private long size;
+
+    /**
+     * Get the name.
+     * 
+     * @return the name.
+     */
+    public String getName() {
+        return name;
+    }
+    
+    /**
+     * Get the size.
+     * 
+     * @return the size.
+     */
+    public long getSize() {
+        return size;
+    }
+
+    /**
+     * Set the name.
+     * 
+     * @param name the name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * Set the size.
+     * 
+     * @param size the size.
+     */
+    public void setSize(long size) {
+        this.size = size;
+    }
 }

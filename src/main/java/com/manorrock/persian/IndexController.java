@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2020 Manorrock.com. All Rights Reserved.
+ * Copyright (c) 2002-2021 Manorrock.com. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -27,12 +27,15 @@
 package com.manorrock.persian;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import static java.util.logging.Level.INFO;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import org.omnifaces.oyena.action.ActionMapping;
 
 /**
  * The index bean.
@@ -61,14 +64,14 @@ public class IndexController {
     /**
      * Stores the repositories.
      */
-    private String[] repositories;
+    private List<MavenRepository> repositories;
     
     /**
      * Get the repositories.
      * 
      * @return the repositories.
      */
-    public String[] getRepositories() {
+    public List<MavenRepository> getRepositories() {
         return repositories;
     }
 
@@ -92,12 +95,33 @@ public class IndexController {
             rootDirectory.mkdirs();
         }
         
-        repositories = rootDirectory.list();
+        File[] repositoryFilenames = rootDirectory.listFiles();
+        repositories = new ArrayList();
+        if (repositoryFilenames != null) {
+            for (File repositoryFilename : repositoryFilenames) {
+                repositories.add(loadMavenRepository(repositoryFilename));
+            }
+        }
     }
     
-    
-    @ActionMapping("/")
-    public String index() {
-        return "/WEB-INF/ui/index.xhtml";
+    /**
+     * Load a Maven repository.
+     * 
+     * @param file the file.
+     * @return the Maven repository.
+     */
+    public MavenRepository loadMavenRepository(File file) {
+        MavenRepository repository = new MavenRepository();
+        repository.setName(file.getName());
+        long size = -1L;
+        try {
+            size = Files.walk(file.toPath())
+                .filter(p -> p.toFile().isFile())
+                .mapToLong(p -> p.toFile().length())
+                .sum();
+        } catch(IOException ioe) {
+        }
+        repository.setSize(size);
+        return repository;
     }
 }

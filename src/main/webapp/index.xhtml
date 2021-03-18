@@ -9,9 +9,18 @@
     <body>
         <ui:composition template="/WEB-INF/ui/template.xhtml">
             <ui:define name="content">
-                <ui:repeat var="repository" value="#{indexController.repositories}">
-                    <h:outputText value="#{repository}"/>
-                </ui:repeat>
+                <table>
+                    <tr>
+                        <th>Repository</th>
+                        <th>Size</th>
+                    </tr>
+                    <ui:repeat var="repository" value="#{indexController.repositories}">
+                        <tr>
+                            <td><h:outputText value="#{repository.name}"/></td>
+                            <td><h:outputText value="#{repository.size}"/></td>
+                        </tr>
+                    </ui:repeat>
+                </table>
             </ui:define>
         </ui:composition>
     </body>
