@@ -1,7 +1,7 @@
-FROM eclipse-temurin:11
-ENV TOMCAT_VERSION=9.0.52
+FROM eclipse-temurin:17
+ENV TOMCAT_VERSION=10.0.17
 RUN cd /usr/local && \
-    curl --insecure -L -O https://archive.apache.org/dist/tomcat/tomcat-9/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz && \
+    curl --insecure -L -O https://archive.apache.org/dist/tomcat/tomcat-10/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz && \
     tar xfvz apache-tomcat-$TOMCAT_VERSION.tar.gz && \
     mv apache-tomcat-$TOMCAT_VERSION tomcat && \
     rm apache-tomcat-$TOMCAT_VERSION.tar.gz && \

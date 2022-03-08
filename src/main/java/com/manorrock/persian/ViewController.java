@@ -29,13 +29,13 @@ package com.manorrock.persian;
 import java.io.File;
 import static java.util.logging.Level.INFO;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
-import org.omnifaces.oyena.action.ActionMapping;
+import com.manorrock.oyena.lifecycle.action.ActionMapping;
 
 /**
  * The view controller.
