@@ -2,23 +2,17 @@
 
 This project delivers you with a Maven repository server.
 
-## Deploy the server using Docker
+## Deploy the WAR file
 
-```
-  docker run --rm -d -p 8080:8080 -v $PWD:/root/.manorrock/persian manorrock/persian:VERSION
-```
-
-And replace VERSION with the version you want to use.
-
-> _Note_ in the command line above we have mapped the 
-> `/root/.manorrock/persian` directory to point to the current directory so
-> we can persist the Maven repositories outside of the container.
+Manorrock Persian is distributed as a WAR file so you can deploy it on the
+Servlet container of your choice. See the documentation of your Servlet
+container on how to deploy the WAR file.
 
 ## Verify the server is up and running
 
-Create a `settings.xml` file with the content from the snippet below, or rename
-the `settings.xml.template` in the root directory of this project to 
-`settings.xml`:
+Once you have deployed the WAR file create a `settings.xml` file with the
+content from the snippet below, or rename the `settings.xml.template` in the
+root directory of this project to `settings.xml`:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
