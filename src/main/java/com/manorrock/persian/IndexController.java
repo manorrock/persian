@@ -31,11 +31,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import static java.util.logging.Level.INFO;
-import java.util.logging.Logger;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 
 /**
  * The index bean.
@@ -47,20 +46,11 @@ import jakarta.enterprise.context.RequestScoped;
 public class IndexController {
     
     /**
-     * Stores the logger.
+     * Stores the application bean.
      */
-    private static final Logger LOGGER = Logger.getLogger(RepoResource.class.getPackageName());
+    @Inject
+    private ApplicationBean application;
 
-    /**
-     * Stores the root directory.
-     */
-    private File rootDirectory;
-
-    /**
-     * Stores the root directory filename.
-     */
-    private String rootDirectoryFilename;
-    
     /**
      * Stores the repositories.
      */
@@ -80,22 +70,8 @@ public class IndexController {
      */
     @PostConstruct
     public void initialize() {
-        rootDirectoryFilename = System.getenv("REPOSITORIES_DIRECTORY");
-        if (rootDirectoryFilename == null) {
-            rootDirectoryFilename = System.getProperty("REPOSITORIES_DIRECTORY",
-                    System.getProperty("user.home") + "/.manorrock/persian/repositories");
-        }
-
-        if (LOGGER.isLoggable(INFO)) {
-            LOGGER.log(INFO, "Repositories directory: {0}", rootDirectoryFilename);
-        }
-
-        rootDirectory = new File(rootDirectoryFilename);
-        if (!rootDirectory.exists()) {
-            rootDirectory.mkdirs();
-        }
         
-        File[] repositoryFilenames = rootDirectory.listFiles();
+        File[] repositoryFilenames = application.getRootDirectory().listFiles();
         repositories = new ArrayList();
         if (repositoryFilenames != null) {
             for (File repositoryFilename : repositoryFilenames) {

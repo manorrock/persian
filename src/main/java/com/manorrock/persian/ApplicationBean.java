@@ -26,36 +26,24 @@
  */
 package com.manorrock.persian;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.io.File;
 import static java.util.logging.Level.INFO;
 import java.util.logging.Logger;
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Named;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
-import org.apache.commons.io.FileUtils;
-import com.manorrock.oyena.lifecycle.action.ActionMapping;
 
 /**
- * The view controller.
- * 
+ * The one and only application bean.
+ *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Named(value = "viewController")
-@RequestScoped
-public class ViewController {
+@ApplicationScoped
+public class ApplicationBean {
     
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(RepoResource.class.getPackageName());
-    
-    /**
-     * Stores the HTTP servlet request.
-     */
-    @Inject
-    private HttpServletRequest request;
+    private static final Logger LOGGER = Logger.getLogger(ApplicationBean.class.getPackageName());
 
     /**
      * Stores the root directory.
@@ -63,36 +51,12 @@ public class ViewController {
     private File rootDirectory;
 
     /**
-     * Stores the root directory filename.
-     */
-    private String rootDirectoryFilename;
-    
-    /**
-     * Stores the repository.
-     */
-    private String repository;
-    
-    /**
-     * Stores the repository size in kilo bytes.
-     */
-    private double repositorySize;
-    
-    /**
-     * Get the repository.
+     * Get the root directory.
      * 
-     * @return the repository.
+     * @return the root directory.
      */
-    public String getRepository() {
-        return repository;
-    }
-    
-    /**
-     * Get the repository size.
-     * 
-     * @return the repository size.
-     */
-    public double getRepositorySize() {
-        return repositorySize;
+    public File getRootDirectory() {
+        return rootDirectory;
     }
 
     /**
@@ -100,7 +64,7 @@ public class ViewController {
      */
     @PostConstruct
     public void initialize() {
-        rootDirectoryFilename = System.getenv("REPOSITORIES_DIRECTORY");
+        String rootDirectoryFilename = System.getenv("REPOSITORIES_DIRECTORY");
         if (rootDirectoryFilename == null) {
             rootDirectoryFilename = System.getProperty("REPOSITORIES_DIRECTORY",
                     System.getProperty("user.home") + "/.manorrock/persian/repositories");
@@ -114,21 +78,5 @@ public class ViewController {
         if (!rootDirectory.exists()) {
             rootDirectory.mkdirs();
         }
-        
-        if (request.getParameter("repository") != null) {
-            repository = request.getParameter("repository");
-            File repositoryDirectory = new File(rootDirectory, repository);
-            repositorySize = FileUtils.sizeOfDirectory(repositoryDirectory) / 1024;
-        }
-    }
-    
-    /**
-     * Handle viewing a repository.
-     * 
-     * @return the repository view page.
-     */
-    @ActionMapping("/view")
-    public String index() {
-        return "/WEB-INF/ui/view.xhtml";
     }
 }
