@@ -1,5 +1,7 @@
 # Manorrock Persian
 
+[![build](https://github.com/manorrock/persian/actions/workflows/build.yml/badge.svg)](https://github.com/manorrock/persian/actions/workflows/build.yml)
+
 This project delivers you with a Maven repository server.
 
 ## Deploy the WAR file
