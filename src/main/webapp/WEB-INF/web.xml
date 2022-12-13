@@ -26,7 +26,7 @@
         <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
         <init-param>
             <param-name>jakarta.faces.LIFECYCLE_ID</param-name>
-            <param-value>org.omnifaces.oyena.action.ActionLifecycle</param-value>
+            <param-value>com.manorrock.oyena.lifecycle.action.ActionLifecycle</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

@@ -64,9 +64,9 @@ public class ApplicationBean {
      */
     @PostConstruct
     public void initialize() {
-        String rootDirectoryFilename = System.getenv("REPOSITORIES_DIRECTORY");
+        String rootDirectoryFilename = System.getenv("PERSIAN_REPOSITORIES_DIRECTORY");
         if (rootDirectoryFilename == null) {
-            rootDirectoryFilename = System.getProperty("REPOSITORIES_DIRECTORY",
+            rootDirectoryFilename = System.getProperty("PERSIAN_REPOSITORIES_DIRECTORY",
                     System.getProperty("user.home") + "/.manorrock/persian/repositories");
         }
 

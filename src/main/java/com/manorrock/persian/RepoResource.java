@@ -26,6 +26,7 @@
  */
 package com.manorrock.persian;
 
+import jakarta.enterprise.context.RequestScoped;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,9 +35,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
-import static java.util.logging.Level.INFO;
 import java.util.logging.Logger;
-import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
@@ -53,49 +53,19 @@ import jakarta.ws.rs.core.StreamingOutput;
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @Path("{repositoryName}")
+@RequestScoped
 public class RepoResource {
 
     /**
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(RepoResource.class.getName());
-
+    
     /**
-     * Stores the root directory.
+     * Stores the application bean.
      */
-    private File rootDirectory;
-
-    /**
-     * Stores the root directory filename.
-     */
-    private String rootDirectoryFilename;
-
-    /**
-     * Constructor.
-     */
-    public RepoResource() {
-    }
-
-    /**
-     * Initialize the bean.
-     */
-    @PostConstruct
-    public void initialize() {
-        rootDirectoryFilename = System.getenv("REPOSITORIES_DIRECTORY");
-        if (rootDirectoryFilename == null) {
-            rootDirectoryFilename = System.getProperty("REPOSITORIES_DIRECTORY",
-                    System.getProperty("user.home") + "/.manorrock/persian/repositories");
-        }
-
-        if (LOGGER.isLoggable(INFO)) {
-            LOGGER.log(INFO, "Repositories directory: {0}", rootDirectoryFilename);
-        }
-
-        rootDirectory = new File(rootDirectoryFilename);
-        if (!rootDirectory.exists()) {
-            rootDirectory.mkdirs();
-        }
-    }
+    @Inject
+    private ApplicationBean application;
 
     /**
      * Get the base directory listing for the repository.
@@ -109,7 +79,7 @@ public class RepoResource {
         Response result;
 
         try {
-            File file = new File(rootDirectory, repositoryName);
+            File file = new File(application.getRootDirectory(), repositoryName);
 
             if (file.exists()) {
                 DirectoryModel model = new DirectoryModel();
@@ -160,7 +130,7 @@ public class RepoResource {
         Response result;
 
         try {
-            File file = new File(rootDirectory, repositoryName + File.separator + path);
+            File file = new File(application.getRootDirectory(), repositoryName + File.separator + path);
 
             if (file.exists()) {
                 DirectoryModel model = new DirectoryModel();
@@ -216,7 +186,7 @@ public class RepoResource {
             @PathParam("version") String version,
             @PathParam("packaging") String packaging) {
 
-        File repoDir = new File(rootDirectory, repositoryName);
+        File repoDir = new File(application.getRootDirectory(), repositoryName);
         File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                 + File.separator + artifactId + "-" + version + "." + packaging);
         
@@ -257,7 +227,7 @@ public class RepoResource {
             @PathParam("packaging") String packaging) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = new File(rootDirectory, repositoryName);
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + artifactId + "-" + version + "." + packaging + ".md5");
             try (InputStream inputStream = new FileInputStream(file)) {
@@ -292,7 +262,7 @@ public class RepoResource {
             @PathParam("packaging") String packaging) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = new File(rootDirectory, repositoryName);
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + artifactId + "-" + version + "." + packaging + ".sha1");
             try (InputStream inputStream = new FileInputStream(file)) {
@@ -325,7 +295,7 @@ public class RepoResource {
             @PathParam("version") String version) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = new File(rootDirectory, repositoryName);
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + "maven-metadata.xml");
 
@@ -361,7 +331,7 @@ public class RepoResource {
             @PathParam("version") String version) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = new File(rootDirectory, repositoryName);
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + "maven-metadata.xml.md5");
 
@@ -397,7 +367,7 @@ public class RepoResource {
             @PathParam("version") String version) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = new File(rootDirectory, repositoryName);
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + "maven-metadata.xml.sha1");
 
@@ -436,7 +406,7 @@ public class RepoResource {
             byte[] data
     ) {
 
-        File directory = new File(rootDirectory, repositoryName
+        File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
                 + groupId.replaceAll("/", File.separator)
                 + File.separator
@@ -483,7 +453,7 @@ public class RepoResource {
             byte[] data
     ) {
 
-        File directory = new File(rootDirectory, repositoryName + File.separator
+        File directory = new File(application.getRootDirectory(), repositoryName + File.separator
                 + groupId.replaceAll("/", File.separator) + File.separator
                 + artifactId + File.separator
                 + version);
@@ -527,7 +497,7 @@ public class RepoResource {
             byte[] data
     ) {
 
-        File directory = new File(rootDirectory, repositoryName
+        File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
                 + groupId.replaceAll("/", File.separator)
                 + File.separator
@@ -571,7 +541,7 @@ public class RepoResource {
             byte[] data
     ) {
 
-        File directory = new File(rootDirectory, repositoryName
+        File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
                 + groupId.replaceAll("/", File.separator)
                 + File.separator
@@ -614,7 +584,7 @@ public class RepoResource {
             byte[] data
     ) {
 
-        File directory = new File(rootDirectory, repositoryName
+        File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
                 + groupId.replaceAll("/", File.separator)
                 + File.separator
@@ -657,7 +627,7 @@ public class RepoResource {
             byte[] data
     ) {
 
-        File directory = new File(rootDirectory, repositoryName
+        File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
                 + groupId.replaceAll("/", File.separator)
                 + File.separator
