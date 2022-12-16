@@ -6,13 +6,14 @@ This project delivers you with a Maven repository server.
 
 ## Deploy the application
 
-To deploy your application you will need 2 pieces.
+To deploy the application you will need 2 pieces.
 
 1. The Piranha Servlet runtime JAR.
 1. The WAR file.
 
 For the WAR file see the target directory. For the Piranha Servlet distribution
-go to Maven Central at https://repo1.maven.org/maven/cloud/piranha/dist/piranha-dist-servlet/
+go to (Maven Central)[https://repo1.maven.org/maven2/cloud/piranha/dist/piranha-dist-servlet/].
+
 And then the following command line will deploy your application:
 
   java -jar piranha-dist-servlet.jar --war-file faces.war
