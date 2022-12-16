@@ -12,7 +12,7 @@ To deploy the application you will need 2 pieces.
 1. The WAR file.
 
 For the WAR file see the target directory. For the Piranha Servlet distribution
-go to (Maven Central)[https://repo1.maven.org/maven2/cloud/piranha/dist/piranha-dist-servlet/].
+go to [Maven Central](https://repo1.maven.org/maven2/cloud/piranha/dist/piranha-dist-servlet/).
 
 And then the following command line will deploy your application:
 
