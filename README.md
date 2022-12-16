@@ -4,11 +4,18 @@
 
 This project delivers you with a Maven repository server.
 
-## Deploy the WAR file
+## Deploy the application
 
-Manorrock Persian is distributed as a WAR file so you can deploy it on the
-Servlet container of your choice. See the documentation of your Servlet
-container on how to deploy the WAR file.
+To deploy your application you will need 2 pieces.
+
+1. The Piranha Servlet runtime JAR.
+1. The WAR file.
+
+For the WAR file see the target directory. For the Piranha Servlet distribution
+go to Maven Central at https://repo1.maven.org/maven/cloud/piranha/dist/piranha-dist-servlet/
+And then the following command line will deploy your application:
+
+  java -jar piranha-dist-servlet.jar --war-file faces.war
 
 ## Verify the server is up and running
 
