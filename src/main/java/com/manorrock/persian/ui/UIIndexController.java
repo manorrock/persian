@@ -49,19 +49,19 @@ public class UIIndexController {
      * Stores the application bean.
      */
     @Inject
-    private UIApplicationBean application;
+    private UIApplicationBean2 application;
 
     /**
      * Stores the repositories.
      */
-    private List<UIMavenRepositoryModel> repositories;
+    private List<UIMavenRepositoryModel2> repositories;
     
     /**
      * Get the repositories.
      * 
      * @return the repositories.
      */
-    public List<UIMavenRepositoryModel> getRepositories() {
+    public List<UIMavenRepositoryModel2> getRepositories() {
         return repositories;
     }
 
@@ -86,8 +86,8 @@ public class UIIndexController {
      * @param file the file.
      * @return the Maven repository.
      */
-    public UIMavenRepositoryModel loadMavenRepository(File file) {
-        UIMavenRepositoryModel repository = new UIMavenRepositoryModel();
+    public UIMavenRepositoryModel2 loadMavenRepository(File file) {
+        UIMavenRepositoryModel2 repository = new UIMavenRepositoryModel2();
         repository.setName(file.getName());
         long size = -1L;
         try {

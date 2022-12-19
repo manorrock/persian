@@ -26,56 +26,57 @@
  */
 package com.manorrock.persian.ui;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import java.io.File;
+import static java.util.logging.Level.INFO;
+import java.util.logging.Logger;
+
 /**
- * A Maven repository.
- * 
+ * The one and only application bean.
+ *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class UIMavenRepositoryModel {
+@ApplicationScoped
+public class UIApplicationBean2 {
     
     /**
-     * Stores the name.
+     * Stores the logger.
      */
-    private String name;
-    
-    /**
-     * Stores the size.
-     */
-    private long size;
+    private static final Logger LOGGER = Logger.getLogger(UIApplicationBean2.class.getPackageName());
 
     /**
-     * Get the name.
-     * 
-     * @return the name.
+     * Stores the root directory.
      */
-    public String getName() {
-        return name;
-    }
-    
+    private File rootDirectory;
+
     /**
-     * Get the size.
+     * Get the root directory.
      * 
-     * @return the size.
+     * @return the root directory.
      */
-    public long getSize() {
-        return size;
+    public File getRootDirectory() {
+        return rootDirectory;
     }
 
     /**
-     * Set the name.
-     * 
-     * @param name the name.
+     * Initialize the bean.
      */
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    /**
-     * Set the size.
-     * 
-     * @param size the size.
-     */
-    public void setSize(long size) {
-        this.size = size;
+    @PostConstruct
+    public void initialize() {
+        String rootDirectoryFilename = System.getenv("PERSIAN_REPOSITORIES_DIRECTORY");
+        if (rootDirectoryFilename == null) {
+            rootDirectoryFilename = System.getProperty("PERSIAN_REPOSITORIES_DIRECTORY",
+                    System.getProperty("user.home") + "/.manorrock/persian/repositories");
+        }
+
+        if (LOGGER.isLoggable(INFO)) {
+            LOGGER.log(INFO, "Repositories directory: {0}", rootDirectoryFilename);
+        }
+
+        rootDirectory = new File(rootDirectoryFilename);
+        if (!rootDirectory.exists()) {
+            rootDirectory.mkdirs();
+        }
     }
 }
