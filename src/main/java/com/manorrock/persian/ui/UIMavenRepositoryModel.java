@@ -31,7 +31,7 @@ package com.manorrock.persian.ui;
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class UIMavenRepositoryModel2 {
+public class UIMavenRepositoryModel {
     
     /**
      * Stores the name.

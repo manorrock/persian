@@ -38,12 +38,12 @@ import java.util.logging.Logger;
  * @author Manfred Riem (mriem@manorrock.com)
  */
 @ApplicationScoped
-public class UIApplicationBean2 {
+public class UIApplicationBean {
     
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UIApplicationBean2.class.getPackageName());
+    private static final Logger LOGGER = Logger.getLogger(UIApplicationBean.class.getPackageName());
 
     /**
      * Stores the root directory.
