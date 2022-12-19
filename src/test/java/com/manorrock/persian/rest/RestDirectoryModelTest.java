@@ -24,25 +24,58 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.persian;
+package com.manorrock.persian.rest;
 
-import java.util.HashSet;
-import java.util.Set;
-import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.core.Application;
+import java.util.ArrayList;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.api.Test;
 
 /**
- * The Persian application.
+ * The JUnit test for the RestDirectoryModel class.
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@ApplicationPath("repositories")
-public class PersianApplication extends Application {
+public class RestDirectoryModelTest {
 
-    @Override
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> classes = new HashSet<>();
-        classes.add(RepoResource.class);
-        return classes;
+    /**
+     * Test getFiles method.
+     */
+    @Test
+    public void testGetFiles() {
+        RestDirectoryModel model = new RestDirectoryModel();
+        assertNull(model.getFiles());
+    }
+
+    /**
+     * Test getName method.
+     */
+    @Test
+    public void testGetName() {
+        RestDirectoryModel model = new RestDirectoryModel();
+        assertNull(model.getName());
+    }
+
+    /**
+     * Test setFiles method.
+     */
+    @Test
+    public void testSetFiles() {
+        List<RestFileModel> files = new ArrayList<>();
+        RestDirectoryModel model = new RestDirectoryModel();
+        model.setFiles(files);
+        assertNotNull(model.getFiles());
+    }
+
+    /**
+     * Test setName method.
+     */
+    @Test
+    public void testSetName() {
+        RestDirectoryModel model = new RestDirectoryModel();
+        model.setName("TheName");
+        assertEquals("TheName", model.getName());
     }
 }

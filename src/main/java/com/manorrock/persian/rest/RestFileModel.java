@@ -24,59 +24,65 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.persian;
+package com.manorrock.persian.rest;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.ApplicationScoped;
-import java.io.File;
-import static java.util.logging.Level.INFO;
-import java.util.logging.Logger;
+import java.io.Serializable;
 
 /**
- * The one and only application bean.
+ * A file model.
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@ApplicationScoped
-public class ApplicationBean {
-    
-    /**
-     * Stores the logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ApplicationBean.class.getPackageName());
+public class RestFileModel implements Serializable {
 
     /**
-     * Stores the root directory.
+     * Stores the serial version UID.
      */
-    private File rootDirectory;
+    private static final long serialVersionUID = 4003044105012813335L;
 
     /**
-     * Get the root directory.
-     * 
-     * @return the root directory.
+     * Stores the directory flag.
      */
-    public File getRootDirectory() {
-        return rootDirectory;
+    private boolean directory;
+
+    /**
+     * Stores the name.
+     */
+    private String name;
+
+    /**
+     * Get the name.
+     *
+     * @return the name.
+     */
+    public String getName() {
+        return name;
     }
 
     /**
-     * Initialize the bean.
+     * Is directory.
+     *
+     * @return true if a directory, false otherwise.
      */
-    @PostConstruct
-    public void initialize() {
-        String rootDirectoryFilename = System.getenv("PERSIAN_REPOSITORIES_DIRECTORY");
-        if (rootDirectoryFilename == null) {
-            rootDirectoryFilename = System.getProperty("PERSIAN_REPOSITORIES_DIRECTORY",
-                    System.getProperty("user.home") + "/.manorrock/persian/repositories");
-        }
+    public boolean isDirectory() {
+        return directory;
+    }
 
-        if (LOGGER.isLoggable(INFO)) {
-            LOGGER.log(INFO, "Repositories directory: {0}", rootDirectoryFilename);
-        }
+    /**
+     * Set directory.
+     *
+     * @param directory the directory flag.
+     */
+    public void setDirectory(boolean directory) {
+        this.directory = directory;
+    }
 
-        rootDirectory = new File(rootDirectoryFilename);
-        if (!rootDirectory.exists()) {
-            rootDirectory.mkdirs();
-        }
+    /**
+     * Set the name.
+     *
+     * @param name the name.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -24,58 +24,80 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.persian;
+package com.manorrock.persian.ui;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import org.junit.jupiter.api.Test;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 
 /**
- * The JUnit test for the DirectoryModel class.
- *
+ * The index bean.
+ * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-public class DirectoryModelTest {
+@Named(value = "indexController")
+@RequestScoped
+public class UIIndexController {
+    
+    /**
+     * Stores the application bean.
+     */
+    @Inject
+    private UIApplicationBean application;
 
     /**
-     * Test getFiles method.
+     * Stores the repositories.
      */
-    @Test
-    public void testGetFiles() {
-        DirectoryModel model = new DirectoryModel();
-        assertNull(model.getFiles());
+    private List<UIMavenRepositoryModel> repositories;
+    
+    /**
+     * Get the repositories.
+     * 
+     * @return the repositories.
+     */
+    public List<UIMavenRepositoryModel> getRepositories() {
+        return repositories;
     }
 
     /**
-     * Test getName method.
+     * Initialize the bean.
      */
-    @Test
-    public void testGetName() {
-        DirectoryModel model = new DirectoryModel();
-        assertNull(model.getName());
+    @PostConstruct
+    public void initialize() {
+        
+        File[] repositoryFilenames = application.getRootDirectory().listFiles();
+        repositories = new ArrayList();
+        if (repositoryFilenames != null) {
+            for (File repositoryFilename : repositoryFilenames) {
+                repositories.add(loadMavenRepository(repositoryFilename));
+            }
+        }
     }
-
+    
     /**
-     * Test setFiles method.
+     * Load a Maven repository.
+     * 
+     * @param file the file.
+     * @return the Maven repository.
      */
-    @Test
-    public void testSetFiles() {
-        List<FileModel> files = new ArrayList<>();
-        DirectoryModel model = new DirectoryModel();
-        model.setFiles(files);
-        assertNotNull(model.getFiles());
-    }
-
-    /**
-     * Test setName method.
-     */
-    @Test
-    public void testSetName() {
-        DirectoryModel model = new DirectoryModel();
-        model.setName("TheName");
-        assertEquals("TheName", model.getName());
+    public UIMavenRepositoryModel loadMavenRepository(File file) {
+        UIMavenRepositoryModel repository = new UIMavenRepositoryModel();
+        repository.setName(file.getName());
+        long size = -1L;
+        try {
+            size = Files.walk(file.toPath())
+                .filter(p -> p.toFile().isFile())
+                .mapToLong(p -> p.toFile().length())
+                .sum();
+        } catch(IOException ioe) {
+        }
+        repository.setSize(size);
+        return repository;
     }
 }

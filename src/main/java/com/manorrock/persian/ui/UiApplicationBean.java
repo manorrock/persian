@@ -24,70 +24,59 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.persian;
+package com.manorrock.persian.ui;
 
-import java.io.Serializable;
-import java.util.List;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import java.io.File;
+import static java.util.logging.Level.INFO;
+import java.util.logging.Logger;
 
 /**
- * A directory model.
+ * The one and only application bean.
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@XmlRootElement(name = "directory")
-public class DirectoryModel implements Serializable {
+@ApplicationScoped
+public class UIApplicationBean {
+    
+    /**
+     * Stores the logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(UIApplicationBean.class.getPackageName());
 
     /**
-     * Stores the serial version UID.
+     * Stores the root directory.
      */
-    private static final long serialVersionUID = 9123973478589393249L;
+    private File rootDirectory;
 
     /**
-     * Stores the files.
+     * Get the root directory.
+     * 
+     * @return the root directory.
      */
-    private List<FileModel> files;
-
-    /**
-     * Stores the directory name.
-     */
-    private String name;
-
-    /**
-     * Get the files.
-     *
-     * @return the files.
-     */
-    @XmlElement(name = "file", type = FileModel.class)
-    public List<FileModel> getFiles() {
-        return files;
+    public File getRootDirectory() {
+        return rootDirectory;
     }
 
     /**
-     * Get the name.
-     *
-     * @return the name.
+     * Initialize the bean.
      */
-    public String getName() {
-        return name;
-    }
+    @PostConstruct
+    public void initialize() {
+        String rootDirectoryFilename = System.getenv("PERSIAN_REPOSITORIES_DIRECTORY");
+        if (rootDirectoryFilename == null) {
+            rootDirectoryFilename = System.getProperty("PERSIAN_REPOSITORIES_DIRECTORY",
+                    System.getProperty("user.home") + "/.manorrock/persian/repositories");
+        }
 
-    /**
-     * Set the files.
-     *
-     * @param files the files.
-     */
-    public void setFiles(List<FileModel> files) {
-        this.files = files;
-    }
+        if (LOGGER.isLoggable(INFO)) {
+            LOGGER.log(INFO, "Repositories directory: {0}", rootDirectoryFilename);
+        }
 
-    /**
-     * Set the name.
-     *
-     * @param name the name.
-     */
-    public void setName(String name) {
-        this.name = name;
+        rootDirectory = new File(rootDirectoryFilename);
+        if (!rootDirectory.exists()) {
+            rootDirectory.mkdirs();
+        }
     }
 }

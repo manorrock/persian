@@ -24,7 +24,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.persian;
+package com.manorrock.persian.rest;
 
 import jakarta.enterprise.context.RequestScoped;
 import java.io.File;
@@ -54,18 +54,18 @@ import jakarta.ws.rs.core.StreamingOutput;
  */
 @Path("{repositoryName}")
 @RequestScoped
-public class RepoResource {
+public class RestResource {
 
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(RepoResource.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RestResource.class.getName());
     
     /**
      * Stores the application bean.
      */
     @Inject
-    private ApplicationBean application;
+    private RestApplicationBean application;
 
     /**
      * Get the base directory listing for the repository.
@@ -82,9 +82,9 @@ public class RepoResource {
             File file = new File(application.getRootDirectory(), repositoryName);
 
             if (file.exists()) {
-                DirectoryModel model = new DirectoryModel();
+                RestDirectoryModel model = new RestDirectoryModel();
                 model.setName(repositoryName);
-                ArrayList<FileModel> files = new ArrayList<>();
+                ArrayList<RestFileModel> files = new ArrayList<>();
                 for (File currentFile : file.listFiles()) {
                     String name = currentFile.getAbsolutePath().substring(file.getCanonicalPath().length() + 1);
                     name = name.replaceAll("&", "&amp;");
@@ -96,7 +96,7 @@ public class RepoResource {
                     }
 
                     if (show) {
-                        FileModel fileModel = new FileModel();
+                        RestFileModel fileModel = new RestFileModel();
                         fileModel.setName(name);
                         fileModel.setDirectory(currentFile.isDirectory());
                         files.add(fileModel);
@@ -133,9 +133,9 @@ public class RepoResource {
             File file = new File(application.getRootDirectory(), repositoryName + File.separator + path);
 
             if (file.exists()) {
-                DirectoryModel model = new DirectoryModel();
+                RestDirectoryModel model = new RestDirectoryModel();
                 model.setName(repositoryName + File.separator + path);
-                ArrayList<FileModel> files = new ArrayList<>();
+                ArrayList<RestFileModel> files = new ArrayList<>();
                 for (File currentFile : file.listFiles()) {
                     String name = currentFile.getAbsolutePath().substring(file.getCanonicalPath().length() + 1);
                     name = name.replaceAll("&", "&amp;");
@@ -147,7 +147,7 @@ public class RepoResource {
                     }
 
                     if (show) {
-                        FileModel fileModel = new FileModel();
+                        RestFileModel fileModel = new RestFileModel();
                         fileModel.setName(name);
                         fileModel.setDirectory(currentFile.isDirectory());
                         files.add(fileModel);

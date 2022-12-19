@@ -24,80 +24,58 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.manorrock.persian;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Named;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+package com.manorrock.persian.ui;
 
 /**
- * The index bean.
+ * A Maven repository.
  * 
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Named(value = "indexController")
-@RequestScoped
-public class IndexController {
+public class UIMavenRepositoryModel {
     
     /**
-     * Stores the application bean.
+     * Stores the name.
      */
-    @Inject
-    private ApplicationBean application;
+    private String name;
+    
+    /**
+     * Stores the size.
+     */
+    private long size;
 
     /**
-     * Stores the repositories.
-     */
-    private List<MavenRepository> repositories;
-    
-    /**
-     * Get the repositories.
+     * Get the name.
      * 
-     * @return the repositories.
+     * @return the name.
      */
-    public List<MavenRepository> getRepositories() {
-        return repositories;
-    }
-
-    /**
-     * Initialize the bean.
-     */
-    @PostConstruct
-    public void initialize() {
-        
-        File[] repositoryFilenames = application.getRootDirectory().listFiles();
-        repositories = new ArrayList();
-        if (repositoryFilenames != null) {
-            for (File repositoryFilename : repositoryFilenames) {
-                repositories.add(loadMavenRepository(repositoryFilename));
-            }
-        }
+    public String getName() {
+        return name;
     }
     
     /**
-     * Load a Maven repository.
+     * Get the size.
      * 
-     * @param file the file.
-     * @return the Maven repository.
+     * @return the size.
      */
-    public MavenRepository loadMavenRepository(File file) {
-        MavenRepository repository = new MavenRepository();
-        repository.setName(file.getName());
-        long size = -1L;
-        try {
-            size = Files.walk(file.toPath())
-                .filter(p -> p.toFile().isFile())
-                .mapToLong(p -> p.toFile().length())
-                .sum();
-        } catch(IOException ioe) {
-        }
-        repository.setSize(size);
-        return repository;
+    public long getSize() {
+        return size;
+    }
+
+    /**
+     * Set the name.
+     * 
+     * @param name the name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * Set the size.
+     * 
+     * @param size the size.
+     */
+    public void setSize(long size) {
+        this.size = size;
     }
 }
