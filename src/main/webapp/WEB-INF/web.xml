@@ -13,15 +13,6 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
-        <servlet-name>Jersey</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>jakarta.ws.rs.Application</param-name>
-            <param-value>com.manorrock.persian.PersianApplication</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>    
-    <servlet>
         <servlet-name>Oyena Action Servlet</servlet-name>
         <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
         <init-param>
@@ -29,10 +20,6 @@
             <param-value>com.manorrock.oyena.lifecycle.action.ActionLifecycle</param-value>
         </init-param>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Jersey</servlet-name>
-        <url-pattern>/repositories/*</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
@@ -51,8 +38,4 @@
         <error-code>404</error-code>
         <location>/ui/404.xhtml</location>
     </error-page>
-    <resource-env-ref>
-        <resource-env-ref-name>BeanManager</resource-env-ref-name>
-        <resource-env-ref-type>jakarta.enterprise.inject.spi.BeanManager</resource-env-ref-type>
-    </resource-env-ref>
 </web-app>
