@@ -81,6 +81,18 @@ Uploaded to default: http://localhost:8080/persian/repositories/test/com/manorro
 
 Congratulations you are now running Manorrock Persian!
 
+## Deploy the server using Docker
+
+```
+  docker run --rm -d -p 8080:8080 -v $PWD:/root/.manorrock/persian manorrock/persian:VERSION
+```
+
+And replace VERSION with the version you want to use.
+
+> _Note_ in the command line above we have mapped the 
+> `/root/.manorrock/persian` directory to point to the current directory so
+> we can persist the Maven repositories outside of the container.
+
 ## More information about deploying to a Maven repository
 
 See [Deploy](https://books.sonatype.com/mvnref-book/reference/lifecycle-sect-common-goals.html#lifecycle-sect-deploy-phase)
