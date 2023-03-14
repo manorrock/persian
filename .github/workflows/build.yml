@@ -20,6 +20,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+      with:
+        version: v0.10.0
     - name: Build linux/amd64 image
       run: |
         docker buildx build --push --platform linux/amd64 -f Dockerfile -t manorrock/persian:amd64-latest .
