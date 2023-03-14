@@ -26,8 +26,8 @@ jobs:
         docker pull manorrock/persian:amd64-latest
     - name: Build linux/arm64 image
       run: |
-        docker buildx build --push --platform linux/arm64 -f Dockerfile.arm64v8 -t manorrock/persian:arm64v8-latest .
-        docker pull manorrock/persian:arm64v8-latest
+        docker buildx build --push --platform linux/arm64 -f Dockerfile.arm64 -t manorrock/persian:arm64-latest .
+        docker pull manorrock/persian:arm64-latest
     - name: Build multi-arch manifest
       run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled
@@ -37,5 +37,5 @@ jobs:
         docker manifest annotate manorrock/persian:latest \
            manorrock/persian:amd64-latest --os linux --arch amd64
         docker manifest annotate manorrock/persian:latest \
-           manorrock/persian:arm64v8-latest --os linux --arch arm64v8
+           manorrock/persian:arm64-latest --os linux --arch arm64
         docker manifest push manorrock/persian:latest
