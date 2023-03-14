@@ -37,6 +37,7 @@ jobs:
         export DOCKER_CLI_EXPERIMENTAL=enabled
         docker pull manorrock/persian:amd64-latest
         docker pull --platform linux/arm64 manorrock/persian:arm64-latest
+        docker manifest rm manorrock/persian:latest || true
         docker manifest create manorrock/persian:latest \
            manorrock/persian:amd64-latest \
            manorrock/persian:arm64-latest
