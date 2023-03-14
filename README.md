@@ -4,26 +4,23 @@
 
 This project delivers you with a Maven repository server.
 
-## Deploy the application
+## Deploy the server using Docker
 
-To deploy the application you will need 2 pieces.
+```
+  docker run --rm -d -p 8080:8080 -v $PWD:/root/.manorrock/persian manorrock/persian:VERSION
+```
 
-1. The Piranha Servlet runtime JAR.
-1. The WAR file.
+And replace VERSION with the version you want to use.
 
-For the WAR file see the target directory.
-
-For the Piranha Servlet distribution go to [Maven Central](https://repo1.maven.org/maven2/cloud/piranha/dist/piranha-dist-servlet/).
-
-And then the following command line will deploy your application:
-
-  java -jar piranha-dist-servlet.jar --war-file persian.war
+> _Note_ in the command line above we have mapped the 
+> `/root/.manorrock/persian` directory to point to the current directory so
+> we can persist the Maven repositories outside of the container.
 
 ## Verify the server is up and running
 
-Once you have deployed the WAR file create a `settings.xml` file with the
-content from the snippet below, or rename the `settings.xml.template` in the
-root directory of this project to `settings.xml`:
+Create a `settings.xml` file with the content from the snippet below, or rename
+the `settings.xml.template` in the root directory of this project to 
+`settings.xml`:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -52,7 +49,7 @@ root directory of this project to `settings.xml`:
                         <updatePolicy>always</updatePolicy>
                         <checksumPolicy>ignore</checksumPolicy>
                     </snapshots>
-                    <url>http://localhost:8080/persian/repositories</url>
+                    <url>http://localhost:8080/repositories</url>
                     <layout>default</layout>
                 </repository>
             </repositories>
@@ -64,34 +61,19 @@ root directory of this project to `settings.xml`:
 Now pick any Maven project and execute the command below to upload the artifacts:
 
 ```
-mvn deploy -DaltDeploymentRepository=default::default::http://localhost:8080/persian/repositories/test
+mvn deploy -DaltDeploymentRepository=default::default::http://localhost:8080/repositories/test
 ```
 
-The end of the output should be similar to what you see below:
+You should see output similar to what you see below:
 
 ```
-Uploaded to default: http://localhost:8080/persian/repositories/test/com/manorrock/persian/persian/maven-metadata.xml (578 B at 95 B/s)
+Uploaded to default: http://localhost:8080/repositories/test/com/manorrock/persian/persian/maven-metadata.xml (578 B at 95 B/s)
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  44.961 s
-[INFO] Finished at: 2020-04-14T22:48:32-06:00
 [INFO] ------------------------------------------------------------------------
 ```
 
 Congratulations you are now running Manorrock Persian!
-
-## Deploy the server using Docker
-
-```
-  docker run --rm -d -p 8080:8080 -v $PWD:/root/.manorrock/persian manorrock/persian:VERSION
-```
-
-And replace VERSION with the version you want to use.
-
-> _Note_ in the command line above we have mapped the 
-> `/root/.manorrock/persian` directory to point to the current directory so
-> we can persist the Maven repositories outside of the container.
 
 ## More information about deploying to a Maven repository
 
