@@ -20,13 +20,22 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Build container image
+    - name: Build linux/amd64 image
       run: |
         docker buildx build --push --platform linux/amd64 -f Dockerfile -t manorrock/persian:amd64-latest .
         docker pull manorrock/persian:amd64-latest
+    - name: Build linux/arm64 image
+      run: |
+        docker buildx build --push --platform linux/arm64 -f Dockerfile.arm64v8 -t manorrock/persian:arm64v8-latest .
+        docker pull manorrock/persian:arm64v8-latest
+    - name: Build multi-arch manifest
+      run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled
         docker manifest create manorrock/persian:latest \
-           manorrock/persian:amd64-latest
+           manorrock/persian:amd64-latest \
+           manorrock/persian:arm64-latest
         docker manifest annotate manorrock/persian:latest \
            manorrock/persian:amd64-latest --os linux --arch amd64
+        docker manifest annotate manorrock/persian:latest \
+           manorrock/persian:arm64v8-latest --os linux --arch arm64v8
         docker manifest push manorrock/persian:latest
