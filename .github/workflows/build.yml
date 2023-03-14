@@ -28,10 +28,12 @@ jobs:
         version: v0.10.0
     - name: Build linux/amd64 image
       run: |
-        docker buildx build --push --platform linux/amd64 -f Dockerfile -t manorrock/persian:amd64-latest .
+        docker buildx build --load --platform linux/amd64 -f Dockerfile -t manorrock/persian:amd64-latest .
+        docker push manorrock/persian:amd64-latest
     - name: Build linux/arm64 image
       run: |
-        docker buildx build --push --platform linux/arm64 -f Dockerfile.arm64 -t manorrock/persian:arm64-latest .
+        docker buildx build --load --platform linux/arm64 -f Dockerfile.arm64 -t manorrock/persian:arm64-latest .
+        docker push manorrock/persian:arm64-latest
     - name: Build multi-arch manifest
       run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled
