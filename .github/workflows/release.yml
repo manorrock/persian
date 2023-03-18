@@ -17,21 +17,3 @@ jobs:
         cache: 'maven'
     - name: Build with Maven
       run: mvn -B -DskipTests=true -f pom.xml install
-    - name: Login to Docker Hub
-      uses: azure/docker-login@v1
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Build container image
-      run: |
-        TAG=${GITHUB_REF}
-        INDEX=${TAG%v*}
-        VERSION=${TAG:${#INDEX}}
-        docker buildx build --push --platform linux/amd64 -f Dockerfile -t manorrock/persian:amd64-$VERSION .
-        docker pull manorrock/persian:amd64-$VERSION
-        export DOCKER_CLI_EXPERIMENTAL=enabled
-        docker manifest create manorrock/persian:$VERSION \
-           manorrock/persian:amd64-$VERSION
-        docker manifest annotate manorrock/persian:$VERSION \
-           manorrock/persian:amd64-$VERSION --os linux --arch amd64
-        docker manifest push manorrock/persian:$VERSION
