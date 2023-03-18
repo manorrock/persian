@@ -13,4 +13,16 @@
             <goal>piranha:run</goal>
         </goals>
     </action>
+    <action>
+        <actionName>debug</actionName>
+        <packagings>
+            <packaging>war</packaging>
+            <packaging>ear</packaging>
+            <packaging>ejb</packaging>
+        </packagings>
+        <goals>
+            <goal>package</goal>
+            <goal>piranha:run</goal>
+        </goals>
+    </action>
 </actions>

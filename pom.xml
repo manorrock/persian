@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.manorrock.persian</groupId>
     <artifactId>persian</artifactId>
-    <version>22.12.0-SNAPSHOT</version>
+    <version>23.4.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Manorrock Persian</name>
     <organization>
@@ -12,8 +12,17 @@
         <url>http://www.manorrock.com</url>
     </organization>
     <properties>
+        <jakarta.jakartaee-web-api.version>10.0.0</jakarta.jakartaee-web-api.version>
+        <java.version>17</java.version>
+        <jaxb-runtime.version>4.0.2</jaxb-runtime.version>
+        <junit.version>5.9.2</junit.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
+        <oyena.version>23.3.0</oyena.version>
         <piranha.distribution>webprofile</piranha.distribution>
-        <piranha.version>23.1.0</piranha.version>
+        <piranha.httpPort>8080</piranha.httpPort>
+        <!--<piranha.jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000</piranha.jvmArguments>-->
+        <piranha.version>23.3.0</piranha.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
@@ -32,8 +41,7 @@
                         </goals>
                         <configuration>
                             <distribution>${piranha.distribution}</distribution>
-                            <httpPort>8080</httpPort>
-                            <!--<jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000</jvmArguments>-->
+                            <httpPort>${piranha.httpPort}</httpPort>
                         </configuration>
                     </execution>
                     <execution>
@@ -48,16 +56,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
+                <version>${maven-war-plugin.version}</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
@@ -69,34 +76,46 @@
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
-            <version>4.0.1</version>
+            <version>${jaxb-runtime.version}</version>
             <scope>compile</scope>
-        </dependency>
+            <exclusions>
+                <!-- 
+        
+                    Excluding be cause this causes a ClassNotFoundException as
+                    per https://github.com/eclipse-ee4j/jaxb-ri/issues/1703
+
+                  -->
+                <exclusion>
+                    <groupId>org.eclipse.angus</groupId>
+                    <artifactId>angus-activation</artifactId>
+                </exclusion>
+            </exclusions>
+       </dependency>
         <!-- runtime -->
         <dependency>
             <groupId>com.manorrock.oyena.lifecycle</groupId>
             <artifactId>oyena-lifecycle-action</artifactId>
-            <version>22.12.0</version>
+            <version>${oyena.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.manorrock.oyena.lifecycle</groupId>
             <artifactId>oyena-lifecycle-cdi</artifactId>
-            <version>22.12.0</version>
+            <version>${oyena.version}</version>
             <scope>runtime</scope>
         </dependency>
         <!-- provided -->
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-web-api</artifactId>
-            <version>10.0.0</version>
+            <version>${jakarta.jakartaee-web-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
