@@ -72,7 +72,7 @@ public class UIIndexController {
     public void initialize() {
         
         File[] repositoryFilenames = application.getRootDirectory().listFiles();
-        repositories = new ArrayList();
+        repositories = new ArrayList<>();
         if (repositoryFilenames != null) {
             for (File repositoryFilename : repositoryFilenames) {
                 repositories.add(loadMavenRepository(repositoryFilename));
