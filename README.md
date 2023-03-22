@@ -4,19 +4,15 @@
 
 This project delivers you with a Maven repository server.
 
-## Deploy the server using Docker
+## Deploy the WAR file
 
-```
-  docker run --rm -d -p 8080:8080 -v $PWD:/root/.manorrock/persian manorrock/persian:VERSION
-```
-
-And replace VERSION with the version you want to use.
-
-> _Note_ in the command line above we have mapped the 
-> `/root/.manorrock/persian` directory to point to the current directory so
-> we can persist the Maven repositories outside of the container.
+Deploy the WAR file to a Jakarta Web Profile 10 compatible runtime of your choice.
 
 ## Verify the server is up and running
+
+ Note the instruction below assume you have deployed the WAR file using the root context. 
+ 
+ If you deployed it with another context root, please adjust the `url` below
 
 Create a `settings.xml` file with the content from the snippet below, or rename
 the `settings.xml.template` in the root directory of this project to 
