@@ -52,17 +52,17 @@ public class UIIndexController {
     private UIApplicationBean application;
 
     /**
-     * Stores the repositories.
+     * Stores the files.
      */
-    private List<UIMavenRepositoryModel> repositories;
+    private List<UIMavenRepositoryModel> files;
     
     /**
      * Get the repositories.
      * 
      * @return the repositories.
      */
-    public List<UIMavenRepositoryModel> getRepositories() {
-        return repositories;
+    public List<UIMavenRepositoryModel> getFiles() {
+        return files;
     }
 
     /**
@@ -71,11 +71,11 @@ public class UIIndexController {
     @PostConstruct
     public void initialize() {
         
-        File[] repositoryFilenames = application.getRootDirectory().listFiles();
-        repositories = new ArrayList<>();
+        File[] repositoryFilenames = application.getRepositoryDirectory().listFiles();
+        files = new ArrayList<>();
         if (repositoryFilenames != null) {
             for (File repositoryFilename : repositoryFilenames) {
-                repositories.add(loadMavenRepository(repositoryFilename));
+                files.add(loadMavenRepository(repositoryFilename));
             }
         }
     }
