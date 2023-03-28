@@ -14,10 +14,10 @@
                         <th>Repository</th>
                         <th>Size</th>
                     </tr>
-                    <ui:repeat var="repository" value="#{indexController.repositories}">
+                    <ui:repeat var="file" value="#{indexController.files}">
                         <tr>
-                            <td><h:outputText value="#{repository.name}"/></td>
-                            <td><h:outputText value="#{repository.size}"/></td>
+                            <td><h:outputText value="#{file.name}"/></td>
+                            <td><h:outputText value="#{file.size}"/></td>
                         </tr>
                     </ui:repeat>
                 </table>

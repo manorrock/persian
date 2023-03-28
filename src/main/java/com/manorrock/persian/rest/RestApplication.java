@@ -36,7 +36,7 @@ import jakarta.ws.rs.core.Application;
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@ApplicationPath("repositories")
+@ApplicationPath("repository")
 public class RestApplication extends Application {
 
     @Override
