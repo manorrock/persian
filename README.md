@@ -8,6 +8,14 @@ This project delivers you with a Maven repository server.
 
 Deploy the WAR file to a Jakarta Web Profile 10 compatible runtime of your choice.
 
+## Running Manorrock Persian using Piranha Web Profile
+
+The command line below shows you how you can start running Manorrock Persian on Piranha Web Profile.
+
+```shell
+  java -jar piranha-dist-webprofile.jar --war-file persian.war
+```
+
 ## Verify the server is up and running
 
  Note the instruction below assume you have deployed the WAR file using the root context. 
@@ -45,7 +53,7 @@ the `settings.xml.template` in the root directory of this project to
                         <updatePolicy>always</updatePolicy>
                         <checksumPolicy>ignore</checksumPolicy>
                     </snapshots>
-                    <url>http://localhost:8080/repositories</url>
+                    <url>http://localhost:8080/repository</url>
                     <layout>default</layout>
                 </repository>
             </repositories>
@@ -57,13 +65,13 @@ the `settings.xml.template` in the root directory of this project to
 Now pick any Maven project and execute the command below to upload the artifacts:
 
 ```
-mvn deploy -DaltDeploymentRepository=default::default::http://localhost:8080/repositories/test
+mvn deploy -DaltDeploymentRepository=default::default::http://localhost:8080/repository
 ```
 
 You should see output similar to what you see below:
 
 ```
-Uploaded to default: http://localhost:8080/repositories/test/com/manorrock/persian/persian/maven-metadata.xml (578 B at 95 B/s)
+Uploaded to default: http://localhost:8080/repository/com/manorrock/persian/persian/maven-metadata.xml
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -86,6 +94,4 @@ so desires.
 
 ## Where are your Docker images?
 
-Unfortunately because Docker Inc has decided to no longer support the Free Team
- plan we can only make the Dockerfiles available on our GitHub repository for 
-you to build the Docker images on your own.
+If you want access to Docker images, please contact us for our commercial support offering by sending an email to info@manorrock.com.
