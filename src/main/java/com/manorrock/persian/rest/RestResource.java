@@ -48,11 +48,11 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.StreamingOutput;
 
 /**
- * The REST resource
+ * A repo resource
  *
  * @author Manfred Riem (mriem@manorrock.com)
  */
-@Path("")
+@Path("{repositoryName}")
 @RequestScoped
 public class RestResource {
 
@@ -60,7 +60,7 @@ public class RestResource {
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(RestResource.class.getName());
-
+    
     /**
      * Stores the application bean.
      */
@@ -70,19 +70,20 @@ public class RestResource {
     /**
      * Get the base directory listing for the repository.
      *
+     * @param repositoryName the repository name
      * @return the director listing.
      */
     @GET
     @Path("")
-    public Response directory0() {
+    public Response directory0(@PathParam("repositoryName") String repositoryName) {
         Response result;
 
         try {
-            File file = application.getRepositoryDirectory();
+            File file = new File(application.getRootDirectory(), repositoryName);
 
             if (file.exists()) {
                 RestDirectoryModel model = new RestDirectoryModel();
-                model.setName("");
+                model.setName(repositoryName);
                 ArrayList<RestFileModel> files = new ArrayList<>();
                 for (File currentFile : file.listFiles()) {
                     String name = currentFile.getAbsolutePath().substring(file.getCanonicalPath().length() + 1);
@@ -117,20 +118,23 @@ public class RestResource {
     /**
      * Get the directory listing for the given path.
      *
+     * @param repositoryName the repository name.
      * @param path the path.
      * @return the view showing the directory listing.
      */
     @GET
     @Path("{path : .+}")
-    public Response directory1(@PathParam("path") String path) {
+    public Response directory1(
+            @PathParam("repositoryName") String repositoryName,
+            @PathParam("path") String path) {
         Response result;
 
         try {
-            File file = new File(application.getRepositoryDirectory(), path);
+            File file = new File(application.getRootDirectory(), repositoryName + File.separator + path);
 
             if (file.exists()) {
                 RestDirectoryModel model = new RestDirectoryModel();
-                model.setName("" + File.separator + path);
+                model.setName(repositoryName + File.separator + path);
                 ArrayList<RestFileModel> files = new ArrayList<>();
                 for (File currentFile : file.listFiles()) {
                     String name = currentFile.getAbsolutePath().substring(file.getCanonicalPath().length() + 1);
@@ -165,6 +169,7 @@ public class RestResource {
     /**
      * Download the artifact.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version
@@ -175,15 +180,16 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/{artifactId2}-{version2}.{packaging}")
     @Produces({"application/octet-stream"})
     public StreamingOutput downloadArtifact(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version,
             @PathParam("packaging") String packaging) {
 
-        File repoDir = application.getRepositoryDirectory();
+        File repoDir = new File(application.getRootDirectory(), repositoryName);
         File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                 + File.separator + artifactId + "-" + version + "." + packaging);
-
+        
         if (file.exists()) {
             return (OutputStream outputStream) -> {
                 try (InputStream inputStream = new FileInputStream(file)) {
@@ -203,6 +209,7 @@ public class RestResource {
     /**
      * Download the artifact MD5.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version
@@ -213,13 +220,14 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/{artifactId2}-{version2}.{packaging}.md5")
     @Produces({"application/octet-stream"})
     public StreamingOutput downloadArtifactMd5(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version,
             @PathParam("packaging") String packaging) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = application.getRepositoryDirectory();
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + artifactId + "-" + version + "." + packaging + ".md5");
             try (InputStream inputStream = new FileInputStream(file)) {
@@ -236,6 +244,7 @@ public class RestResource {
     /**
      * Download the artifact SHA1.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version
@@ -246,13 +255,14 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/{artifactId2}-{version2}.{packaging}.sha1")
     @Produces({"application/octet-stream"})
     public StreamingOutput downloadArtifactSha1(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version,
             @PathParam("packaging") String packaging) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = application.getRepositoryDirectory();
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + artifactId + "-" + version + "." + packaging + ".sha1");
             try (InputStream inputStream = new FileInputStream(file)) {
@@ -269,6 +279,7 @@ public class RestResource {
     /**
      * Download the maven-metadata.xml.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version.
@@ -278,12 +289,13 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/maven-metadata.xml")
     @Produces({"text/xml"})
     public StreamingOutput downloadMetadata(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = application.getRepositoryDirectory();
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + "maven-metadata.xml");
 
@@ -303,6 +315,7 @@ public class RestResource {
     /**
      * Download the maven-metadata.xml MD5.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version.
@@ -312,12 +325,13 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/maven-metadata.xml.md5")
     @Produces({"text/xml"})
     public StreamingOutput downloadMetadataMd5(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = application.getRepositoryDirectory();
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + "maven-metadata.xml.md5");
 
@@ -337,6 +351,7 @@ public class RestResource {
     /**
      * Download the maven-metadata.xml SHA-1.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version.
@@ -346,12 +361,13 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/maven-metadata.xml.sha1")
     @Produces({"text/xml"})
     public StreamingOutput downloadMetadataSha1(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version) {
 
         return (OutputStream outputStream) -> {
-            File repoDir = application.getRepositoryDirectory();
+            File repoDir = new File(application.getRootDirectory(), repositoryName);
             File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                     + File.separator + "maven-metadata.xml.sha1");
 
@@ -371,6 +387,7 @@ public class RestResource {
     /**
      * Upload an artifact.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifactId.
      * @param packaging the packaging.
@@ -381,6 +398,7 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId1}/{version1}/{artifactId2}-{version2}.{packaging}")
     @Consumes({"application/octet-stream"})
     public void uploadArtifact(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId1") String artifactId,
             @PathParam("version1") String version,
@@ -388,8 +406,9 @@ public class RestResource {
             byte[] data
     ) {
 
-        File directory = new File(application.getRepositoryDirectory(), 
-                groupId.replaceAll("/", File.separator)
+        File directory = new File(application.getRootDirectory(), repositoryName
+                + File.separator
+                + groupId.replaceAll("/", File.separator)
                 + File.separator
                 + artifactId
                 + File.separator
@@ -415,6 +434,7 @@ public class RestResource {
     /**
      * Upload an artifact's MD5.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifactId.
      * @param packaging the packaging.
@@ -425,6 +445,7 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/{artifactId2}-{version2}.{packaging}.md5")
     @Consumes({"application/octet-stream"})
     public void uploadArtifactMd5(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version,
@@ -432,8 +453,8 @@ public class RestResource {
             byte[] data
     ) {
 
-        File directory = new File(application.getRepositoryDirectory(), 
-                groupId.replaceAll("/", File.separator) + File.separator
+        File directory = new File(application.getRootDirectory(), repositoryName + File.separator
+                + groupId.replaceAll("/", File.separator) + File.separator
                 + artifactId + File.separator
                 + version);
 
@@ -457,6 +478,7 @@ public class RestResource {
     /**
      * Upload an artifact's SHA-1.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifactId.
      * @param packaging the packaging.
@@ -467,6 +489,7 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/{artifactId2}-{version2}.{packaging}.sha1")
     @Consumes({"application/octet-stream"})
     public void uploadArtifactSha1(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version,
@@ -474,8 +497,9 @@ public class RestResource {
             byte[] data
     ) {
 
-        File directory = new File(application.getRepositoryDirectory(), 
-                groupId.replaceAll("/", File.separator)
+        File directory = new File(application.getRootDirectory(), repositoryName
+                + File.separator
+                + groupId.replaceAll("/", File.separator)
                 + File.separator
                 + artifactId + File.separator
                 + version);
@@ -500,6 +524,7 @@ public class RestResource {
     /**
      * Upload the maven-metadata.xml.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version.
@@ -509,14 +534,16 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/maven-metadata.xml")
     @Consumes({"text/xml"})
     public void uploadMetadata(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version,
             byte[] data
     ) {
 
-        File directory = new File(application.getRepositoryDirectory(), 
-                groupId.replaceAll("/", File.separator)
+        File directory = new File(application.getRootDirectory(), repositoryName
+                + File.separator
+                + groupId.replaceAll("/", File.separator)
                 + File.separator
                 + artifactId);
 
@@ -540,6 +567,7 @@ public class RestResource {
     /**
      * Upload the maven-metadata.xml,md5.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version.
@@ -549,14 +577,16 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/maven-metadata.xml.md5")
     @Consumes({"text/xml"})
     public void uploadMetadataMd5(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version,
             byte[] data
     ) {
 
-        File directory = new File(application.getRepositoryDirectory(), 
-                groupId.replaceAll("/", File.separator)
+        File directory = new File(application.getRootDirectory(), repositoryName
+                + File.separator
+                + groupId.replaceAll("/", File.separator)
                 + File.separator
                 + artifactId);
 
@@ -580,6 +610,7 @@ public class RestResource {
     /**
      * Upload the maven-metadata.xml SHA-1.
      *
+     * @param repositoryName the repository name.
      * @param groupId the group id (in slash format).
      * @param artifactId the artifact id.
      * @param version the version.
@@ -589,14 +620,16 @@ public class RestResource {
     @Path("{groupId : .+}/{artifactId}/{version}/maven-metadata.xml.sha1")
     @Consumes({"text/xml"})
     public void uploadMetadataSha1(
+            @PathParam("repositoryName") String repositoryName,
             @PathParam("groupId") String groupId,
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version,
             byte[] data
     ) {
 
-        File directory = new File(application.getRepositoryDirectory(),
-                groupId.replaceAll("/", File.separator)
+        File directory = new File(application.getRootDirectory(), repositoryName
+                + File.separator
+                + groupId.replaceAll("/", File.separator)
                 + File.separator
                 + artifactId);
 

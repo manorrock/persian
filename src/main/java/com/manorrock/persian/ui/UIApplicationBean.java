@@ -46,17 +46,17 @@ public class UIApplicationBean {
     private static final Logger LOGGER = Logger.getLogger(UIApplicationBean.class.getPackageName());
 
     /**
-     * Stores the repository directory.
+     * Stores the root directory.
      */
-    private File repositoryDirectory;
+    private File rootDirectory;
 
     /**
-     * Get the repository directory.
+     * Get the root directory.
      * 
      * @return the root directory.
      */
-    public File getRepositoryDirectory() {
-        return repositoryDirectory;
+    public File getRootDirectory() {
+        return rootDirectory;
     }
 
     /**
@@ -64,19 +64,19 @@ public class UIApplicationBean {
      */
     @PostConstruct
     public void initialize() {
-        String repositoryDirectoryFilename = System.getenv("PERSIAN_REPOSITORY_DIRECTORY");
-        if (repositoryDirectoryFilename == null) {
-            repositoryDirectoryFilename = System.getProperty("PERSIAN_REPOSITORY_DIRECTORY",
-                    System.getProperty("user.home") + "/.manorrock/persian/repository");
+        String rootDirectoryFilename = System.getenv("PERSIAN_REPOSITORIES_DIRECTORY");
+        if (rootDirectoryFilename == null) {
+            rootDirectoryFilename = System.getProperty("PERSIAN_REPOSITORIES_DIRECTORY",
+                    System.getProperty("user.home") + "/.manorrock/persian/repositories");
         }
 
         if (LOGGER.isLoggable(INFO)) {
-            LOGGER.log(INFO, "Repository directory: {0}", repositoryDirectoryFilename);
+            LOGGER.log(INFO, "Repositories directory: {0}", rootDirectoryFilename);
         }
 
-        repositoryDirectory = new File(repositoryDirectoryFilename);
-        if (!repositoryDirectory.exists()) {
-            repositoryDirectory.mkdirs();
+        rootDirectory = new File(rootDirectoryFilename);
+        if (!rootDirectory.exists()) {
+            rootDirectory.mkdirs();
         }
     }
 }
