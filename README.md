@@ -95,3 +95,8 @@ so desires.
 ## Where are your Docker images?
 
 If you want access to Docker images, please contact us for our commercial support offering by sending an email to info@manorrock.com.
+
+## Can I use a differen directory for the data
+
+Yes, you can. Set the PERSIAN_REPOSITORY_DIRECTORY environment variable to a
+directory of your choice and Manorrock Persian will store the data there.
