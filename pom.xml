@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.manorrock.persian</groupId>
     <artifactId>persian</artifactId>
-    <version>23.4.0-SNAPSHOT</version>
+    <version>23.8.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Manorrock Persian</name>
     <organization>
@@ -12,18 +12,22 @@
         <url>http://www.manorrock.com</url>
     </organization>
     <properties>
+        <!-- dependencies -->
         <jakarta.jakartaee-web-api.version>10.0.0</jakarta.jakartaee-web-api.version>
+        <jaxb-runtime.version>4.0.3</jaxb-runtime.version>
+        <junit.version>5.10.0</junit.version>
+        <oyena.version>23.5.0</oyena.version>
+        <piranha.version>23.8.0</piranha.version>
+        <!-- other -->
         <java.version>17</java.version>
-        <jaxb-runtime.version>4.0.2</jaxb-runtime.version>
-        <junit.version>5.9.2</junit.version>
-        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
-        <oyena.version>23.3.0</oyena.version>
         <piranha.distribution>webprofile</piranha.distribution>
         <piranha.httpPort>8080</piranha.httpPort>
         <!--<piranha.jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000</piranha.jvmArguments>-->
-        <piranha.version>23.3.0</piranha.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- plugins -->
+        <docker-maven-plugin.version>0.42.1</docker-maven-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
     </properties>
     <build>
         <finalName>persian</finalName>
@@ -119,4 +123,46 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker-maven-plugin.version}</version>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <alias>persian</alias>
+                                    <name>manorrock/persian:%l</name>
+                                    <build>
+                                        <buildx>
+                                            <platforms>
+                                                <platform>linux/amd64</platform>
+                                                <platform>linux/arm</platform>
+                                                <platform>linux/arm64</platform>
+                                            </platforms>
+                                        </buildx>
+                                        <contextDir>${basedir}</contextDir>
+                                        <dockerFile>src/main/docker/Dockerfile</dockerFile>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
