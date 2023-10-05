@@ -85,14 +85,18 @@ See [Deploy](https://books.sonatype.com/mvnref-book/reference/lifecycle-sect-com
 at the Maven: The Complete Reference. Or have a look at the [deploy:deploy](https://maven.apache.org/plugins/maven-deploy-plugin/deploy-mojo.html)
 goal of the Maven Deploy plugin.
 
+## Can I use a differen directory for the data
+
+Yes, you can. Set the PERSIAN_REPOSITORY_DIRECTORY environment variable to a
+directory of your choice and Manorrock Persian will store the data there.
+
+## How do I contribute?
+
+See [Contributing](CONTRIBUTING.md)
+
 ## Important notice
 
 Note if you file issues or answer questions on the issue tracker and/or issue 
 pull requests you agree that those contributions will be owned by Manorrock.com
 and that Manorrock.com can use those contributions in any manner Manorrock.com
 so desires.
-
-## Can I use a differen directory for the data
-
-Yes, you can. Set the PERSIAN_REPOSITORY_DIRECTORY environment variable to a
-directory of your choice and Manorrock Persian will store the data there.
