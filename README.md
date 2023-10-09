@@ -94,6 +94,10 @@ directory of your choice and Manorrock Persian will store the data there.
 
 See [Contributing](CONTRIBUTING.md)
 
+## Our code of Conduct
+
+See [Code of Conduct](CODE_OF_CONDUCT.md)
+
 ## Important notice
 
 Note if you file issues or answer questions on the issue tracker and/or issue 
