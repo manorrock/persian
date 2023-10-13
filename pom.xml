@@ -19,7 +19,7 @@
         <oyena.version>23.5.0</oyena.version>
         <piranha.version>23.8.0</piranha.version>
         <!-- other -->
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <piranha.distribution>webprofile</piranha.distribution>
         <piranha.httpPort>8080</piranha.httpPort>
         <!--<piranha.jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000</piranha.jvmArguments>-->
