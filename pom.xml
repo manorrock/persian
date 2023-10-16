@@ -17,7 +17,7 @@
         <jaxb-runtime.version>4.0.3</jaxb-runtime.version>
         <junit.version>5.10.0</junit.version>
         <oyena.version>23.5.0</oyena.version>
-        <piranha.version>23.8.0</piranha.version>
+        <piranha.version>23.10.0</piranha.version>
         <!-- other -->
         <java.version>21</java.version>
         <piranha.distribution>webprofile</piranha.distribution>
