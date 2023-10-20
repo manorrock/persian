@@ -8,12 +8,21 @@ This project delivers you with a Maven repository server.
 
 Deploy the WAR file to a Jakarta Web Profile 10 compatible runtime of your choice.
 
-## Running Manorrock Persian using Piranha Web Profile
+## Running using Piranha Web Profile
 
 The command line below shows you how you can start running Manorrock Persian on Piranha Web Profile.
 
 ```shell
   java -jar piranha-dist-webprofile.jar --war-file persian.war
+```
+
+## Running using the container image from DockerHub
+
+In an empty directory of your choice use the following command line to start 
+Manorrock Persian.
+
+```shell
+  docker run --rm -d -it -p 8080:8080 -v $PWD:/mnt manorrock/persian
 ```
 
 ## Verify the server is up and running
