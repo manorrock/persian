@@ -6,11 +6,13 @@ This project delivers you with a Maven repository server.
 
 ## Deploy the WAR file
 
-Deploy the WAR file to a Jakarta Web Profile 10 compatible runtime of your choice.
+Deploy the WAR file to a Jakarta Web Profile 10 compatible runtime of your
+choice.
 
 ## Running using Piranha Web Profile
 
-The command line below shows you how you can start running Manorrock Persian on Piranha Web Profile.
+The command line below shows you how you can start running Manorrock Persian on
+Piranha Web Profile:
 
 ```shell
   java -jar piranha-dist-webprofile.jar --war-file persian.war --context-path ROOT
@@ -19,7 +21,7 @@ The command line below shows you how you can start running Manorrock Persian on 
 ## Running using the container image from DockerHub
 
 In an empty directory of your choice use the following command line to start 
-Manorrock Persian.
+Manorrock Persian:
 
 ```shell
   docker run --rm -d -it -p 8080:8080 -v $PWD:/mnt manorrock/persian
@@ -27,13 +29,14 @@ Manorrock Persian.
 
 ## Verify the server is up and running
 
- Note the instruction below assume you have deployed the WAR file using the root context. 
+ Note the instruction below assume you have deployed the WAR file using the root
+ context. 
  
  If you deployed it with another context root, please adjust the `url` below
 
 Create a `settings.xml` file with the content from the snippet below, or rename
 the `settings.xml.template` in the root directory of this project to 
-`settings.xml`:
+`settings.xml` and make adjustments if necessary:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -71,7 +74,8 @@ the `settings.xml.template` in the root directory of this project to
 </settings>
 ```
 
-Now pick any Maven project and execute the command below to upload the artifacts:
+Now pick any Maven project and execute the command below to upload the 
+artifacts:
 
 ```
 mvn deploy -DaltDeploymentRepository=default::default::http://localhost:8080/repository
