@@ -65,7 +65,7 @@ the `settings.xml.template` in the root directory of this project to
                         <updatePolicy>always</updatePolicy>
                         <checksumPolicy>ignore</checksumPolicy>
                     </snapshots>
-                    <url>http://localhost:8080/repository</url>
+                    <url>http://localhost:8080/repositories/myrepo</url>
                     <layout>default</layout>
                 </repository>
             </repositories>
@@ -78,13 +78,13 @@ Now pick any Maven project and execute the command below to upload the
 artifacts:
 
 ```
-mvn deploy -DaltDeploymentRepository=default::default::http://localhost:8080/repository
+mvn deploy -DaltDeploymentRepository=default::default::http://localhost:8080/repositories/myrepo
 ```
 
 You should see output similar to what you see below:
 
 ```
-Uploaded to default: http://localhost:8080/repository/com/manorrock/persian/persian/maven-metadata.xml
+Uploaded to default: http://localhost:8080/repositories/myrepo/com/manorrock/persian/persian/maven-metadata.xml
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
