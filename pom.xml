@@ -136,7 +136,7 @@
                             <images>
                                 <image>
                                     <alias>persian</alias>
-                                    <name>manorrock/persian:%l</name>
+                                    <name>ghcr.io/manorrock/persian:%l</name>
                                     <build>
                                         <buildx>
                                             <platforms>
