@@ -4,35 +4,16 @@
 
 This project delivers you with a Maven repository server.
 
-## Deploy the WAR file
+## Running using the container image from GHCR
 
-Deploy the WAR file to a Jakarta Web Profile 10 compatible runtime of your
-choice.
-
-## Running using Piranha Web Profile
-
-The command line below shows you how you can start running Manorrock Persian on
-Piranha Web Profile:
-
-```shell
-  java -jar piranha-dist-webprofile.jar --war-file persian.war --context-path ROOT
-```
-
-## Running using the container image from DockerHub
-
-In an empty directory of your choice use the following command line to start 
+In an EMPTY directory of your choice use the following command line to start 
 Manorrock Persian:
 
 ```shell
-  docker run --rm -d -it -p 8080:8080 -v $PWD:/mnt manorrock/persian
+  docker run --rm -d -it -p 8080:8080 -v $PWD:/mnt ghcr.io/manorrock/persian
 ```
 
 ## Verify the server is up and running
-
- Note the instruction below assume you have deployed the WAR file using the root
- context. 
- 
- If you deployed it with another context root, please adjust the `url` below
 
 Create a `settings.xml` file with the content from the snippet below, or rename
 the `settings.xml.template` in the root directory of this project to 
@@ -97,11 +78,6 @@ Congratulations you are now running Manorrock Persian!
 See [Deploy](https://books.sonatype.com/mvnref-book/reference/lifecycle-sect-common-goals.html#lifecycle-sect-deploy-phase)
 at the Maven: The Complete Reference. Or have a look at the [deploy:deploy](https://maven.apache.org/plugins/maven-deploy-plugin/deploy-mojo.html)
 goal of the Maven Deploy plugin.
-
-## Can I use a different directory for the data?
-
-Yes, you can. Set the PERSIAN_REPOSITORY_DIRECTORY environment variable to a
-directory of your choice and Manorrock Persian will store the data there.
 
 ## How do I contribute?
 
