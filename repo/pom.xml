@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.manorrock.persian</groupId>
+        <artifactId>project</artifactId>
+        <version>23.8.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>persian</artifactId>
+    <packaging>war</packaging>
+    <name>Manorrock Persian</name>
+    <organization>
+        <name>Manorrock.com</name>
+        <url>http://www.manorrock.com</url>
+    </organization>
+    <properties>
+        <!-- dependencies -->
+        <jakarta.jakartaee-web-api.version>10.0.0</jakarta.jakartaee-web-api.version>
+        <jaxb-runtime.version>4.0.3</jaxb-runtime.version>
+        <junit.version>5.10.0</junit.version>
+        <oyena.version>23.5.0</oyena.version>
+        <piranha.version>24.4.0</piranha.version>
+        <!-- other -->
+        <java.version>21</java.version>
+        <piranha.distribution>webprofile</piranha.distribution>
+        <piranha.httpPort>8080</piranha.httpPort>
+        <!--<piranha.jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000</piranha.jvmArguments>-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- plugins -->
+        <docker-maven-plugin.version>0.42.1</docker-maven-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
+    </properties>
+    <build>
+        <finalName>persian</finalName>
+        <plugins>
+            <plugin>
+                <groupId>cloud.piranha.maven.plugins</groupId>
+                <artifactId>piranha-maven-plugin</artifactId>
+                <version>${piranha.version}</version>
+                <executions>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <distribution>${piranha.distribution}</distribution>
+                            <httpPort>${piranha.httpPort}</httpPort>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <!-- compile -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${jaxb-runtime.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <!-- 
+      
+                  Excluding be cause this causes a ClassNotFoundException as
+                  per https://github.com/eclipse-ee4j/jaxb-ri/issues/1703
+
+                -->
+                <exclusion>
+                    <groupId>org.eclipse.angus</groupId>
+                    <artifactId>angus-activation</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- runtime -->
+        <dependency>
+            <groupId>com.manorrock.oyena.lifecycle</groupId>
+            <artifactId>oyena-lifecycle-action</artifactId>
+            <version>${oyena.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.manorrock.oyena.lifecycle</groupId>
+            <artifactId>oyena-lifecycle-cdi</artifactId>
+            <version>${oyena.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- provided -->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <version>${jakarta.jakartaee-web-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker-maven-plugin.version}</version>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <alias>persian</alias>
+                                    <name>ghcr.io/manorrock/persian:%l</name>
+                                    <build>
+                                        <buildx>
+                                            <platforms>
+                                                <platform>linux/amd64</platform>
+                                                <platform>linux/arm64</platform>
+                                            </platforms>
+                                        </buildx>
+                                        <contextDir>${basedir}</contextDir>
+                                        <dockerFile>src/main/docker/Dockerfile</dockerFile>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
