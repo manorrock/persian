@@ -7,9 +7,9 @@
         <artifactId>project</artifactId>
         <version>23.8.0-SNAPSHOT</version>
     </parent>
-    <artifactId>persian</artifactId>
+    <artifactId>persian-ui</artifactId>
     <packaging>war</packaging>
-    <name>Manorrock Persian</name>
+    <name>Manorrock Persian - UI</name>
     <organization>
         <name>Manorrock.com</name>
         <url>http://www.manorrock.com</url>
@@ -32,7 +32,7 @@
         <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
     </properties>
     <build>
-        <finalName>persian</finalName>
+        <finalName>persian-ui</finalName>
         <plugins>
             <plugin>
                 <groupId>cloud.piranha.maven.plugins</groupId>
