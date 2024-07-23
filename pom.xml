@@ -11,7 +11,12 @@
         <name>Manorrock.com</name>
         <url>http://www.manorrock.com</url>
     </organization>
+    <properties>
+        <!-- other -->
+        <piranha.version>24.7.0</piranha.version>
+    </properties>
     <modules>
         <module>repo</module>
+        <module>ui</module>
     </modules>
 </project>
