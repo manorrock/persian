@@ -14,8 +14,11 @@
     <properties>
         <!-- other -->
         <piranha.version>24.7.0</piranha.version>
+        <!-- plugins -->
+        <docker-maven-plugin.version>0.42.1</docker-maven-plugin.version>
     </properties>
     <modules>
+        <module>docker</module>
         <module>repo</module>
         <module>ui</module>
     </modules>
