@@ -17,3 +17,7 @@ jobs:
         cache: 'maven'
     - name: Build with Maven
       run: mvn -B -DskipTests=true -f pom.xml install
+    - name: Push to GHCR
+      run: |
+        cd repo
+        mvn -B -DskipTests=true -P docker install docker:build docker:push
