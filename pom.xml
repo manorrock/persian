@@ -20,6 +20,5 @@
     <modules>
         <module>docker</module>
         <module>repo</module>
-        <module>ui</module>
     </modules>
 </project>
