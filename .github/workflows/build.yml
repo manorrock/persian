@@ -28,5 +28,4 @@ jobs:
         password: ${{ secrets.GHCR_IO_PASSWORD }}
     - name: Push to GHCR
       run: |
-        cd repo
         mvn -P docker install docker:build docker:push
