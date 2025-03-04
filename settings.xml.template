@@ -24,7 +24,7 @@
                         <updatePolicy>always</updatePolicy>
                         <checksumPolicy>ignore</checksumPolicy>
                     </snapshots>
-                    <url>http://localhost:8080/repositories</url>
+                    <url>http://localhost:8080/persian/repositories/myrepo</url>
                     <layout>default</layout>
                 </repository>
             </repositories>
