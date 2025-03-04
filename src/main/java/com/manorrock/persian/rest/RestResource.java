@@ -18,10 +18,10 @@
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.manorrock.persian.rest;
@@ -33,7 +33,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jakarta.inject.Inject;
@@ -189,10 +194,16 @@ public class RestResource {
         File repoDir = new File(application.getRootDirectory(), repositoryName);
         File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
                 + File.separator + artifactId + "-" + version + "." + packaging);
-        
-        if (file.exists()) {
+
+        if (!file.exists() && isPullThroughEnabled(repositoryName)) {
+            String remoteUrl = getPullThroughUrl(repositoryName);
+            file = fetchFromRemote(repositoryName, remoteUrl, groupId + "/" + artifactId + "/" + version + "/" + artifactId + "-" + version + "." + packaging);
+        }
+
+        final File finalFile = file;
+        if (finalFile != null && finalFile.exists()) {
             return (OutputStream outputStream) -> {
-                try (InputStream inputStream = new FileInputStream(file)) {
+                try (InputStream inputStream = new FileInputStream(finalFile)) {
                     int nextByte;
                     while ((nextByte = inputStream.read()) != -1) {
                         outputStream.write(nextByte);
@@ -226,19 +237,30 @@ public class RestResource {
             @PathParam("version") String version,
             @PathParam("packaging") String packaging) {
 
-        return (OutputStream outputStream) -> {
-            File repoDir = new File(application.getRootDirectory(), repositoryName);
-            File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
-                    + File.separator + artifactId + "-" + version + "." + packaging + ".md5");
-            try (InputStream inputStream = new FileInputStream(file)) {
-                int nextByte;
-                while ((nextByte = inputStream.read()) != -1) {
-                    outputStream.write(nextByte);
+        File repoDir = new File(application.getRootDirectory(), repositoryName);
+        File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
+                + File.separator + artifactId + "-" + version + "." + packaging + ".md5");
+
+        if (!file.exists() && isPullThroughEnabled(repositoryName)) {
+            String remoteUrl = getPullThroughUrl(repositoryName);
+            file = fetchFromRemote(repositoryName, remoteUrl, groupId + "/" + artifactId + "/" + version + "/" + artifactId + "-" + version + "." + packaging + ".md5");
+        }
+
+        final File finalFile = file;
+        if (finalFile != null && finalFile.exists()) {
+            return (OutputStream outputStream) -> {
+                try (InputStream inputStream = new FileInputStream(finalFile)) {
+                    int nextByte;
+                    while ((nextByte = inputStream.read()) != -1) {
+                        outputStream.write(nextByte);
+                    }
+                    outputStream.flush();
+                    outputStream.close();
                 }
-                outputStream.flush();
-                outputStream.close();
-            }
-        };
+            };
+        } else {
+            throw new WebApplicationException(404);
+        }
     }
 
     /**
@@ -261,19 +283,30 @@ public class RestResource {
             @PathParam("version") String version,
             @PathParam("packaging") String packaging) {
 
-        return (OutputStream outputStream) -> {
-            File repoDir = new File(application.getRootDirectory(), repositoryName);
-            File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
-                    + File.separator + artifactId + "-" + version + "." + packaging + ".sha1");
-            try (InputStream inputStream = new FileInputStream(file)) {
-                int nextByte;
-                while ((nextByte = inputStream.read()) != -1) {
-                    outputStream.write(nextByte);
+        File repoDir = new File(application.getRootDirectory(), repositoryName);
+        File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
+                + File.separator + artifactId + "-" + version + "." + packaging + ".sha1");
+
+        if (!file.exists() && isPullThroughEnabled(repositoryName)) {
+            String remoteUrl = getPullThroughUrl(repositoryName);
+            file = fetchFromRemote(repositoryName, remoteUrl, groupId + "/" + artifactId + "/" + version + "/" + artifactId + "-" + version + "." + packaging + ".sha1");
+        }
+
+        final File finalFile = file;
+        if (finalFile != null && finalFile.exists()) {
+            return (OutputStream outputStream) -> {
+                try (InputStream inputStream = new FileInputStream(finalFile)) {
+                    int nextByte;
+                    while ((nextByte = inputStream.read()) != -1) {
+                        outputStream.write(nextByte);
+                    }
+                    outputStream.flush();
+                    outputStream.close();
                 }
-                outputStream.flush();
-                outputStream.close();
-            }
-        };
+            };
+        } else {
+            throw new WebApplicationException(404);
+        }
     }
 
     /**
@@ -294,13 +327,19 @@ public class RestResource {
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version) {
 
-        return (OutputStream outputStream) -> {
-            File repoDir = new File(application.getRootDirectory(), repositoryName);
-            File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
-                    + File.separator + "maven-metadata.xml");
+        File repoDir = new File(application.getRootDirectory(), repositoryName);
+        File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
+                + File.separator + "maven-metadata.xml");
 
-            if (file.exists()) {
-                try (InputStream inputStream = new FileInputStream(file)) {
+        if (!file.exists() && isPullThroughEnabled(repositoryName)) {
+            String remoteUrl = getPullThroughUrl(repositoryName);
+            file = fetchFromRemote(repositoryName, remoteUrl, groupId + "/" + artifactId + "/" + version + "/maven-metadata.xml");
+        }
+
+        final File finalFile = file;
+        if (finalFile != null && finalFile.exists()) {
+            return (OutputStream outputStream) -> {
+                try (InputStream inputStream = new FileInputStream(finalFile)) {
                     int nextByte;
                     while ((nextByte = inputStream.read()) != -1) {
                         outputStream.write(nextByte);
@@ -308,8 +347,10 @@ public class RestResource {
                     outputStream.flush();
                     outputStream.close();
                 }
-            }
-        };
+            };
+        } else {
+            throw new WebApplicationException(404);
+        }
     }
 
     /**
@@ -330,13 +371,19 @@ public class RestResource {
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version) {
 
-        return (OutputStream outputStream) -> {
-            File repoDir = new File(application.getRootDirectory(), repositoryName);
-            File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
-                    + File.separator + "maven-metadata.xml.md5");
+        File repoDir = new File(application.getRootDirectory(), repositoryName);
+        File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
+                + File.separator + "maven-metadata.xml.md5");
 
-            if (file.exists()) {
-                try (InputStream inputStream = new FileInputStream(file)) {
+        if (!file.exists() && isPullThroughEnabled(repositoryName)) {
+            String remoteUrl = getPullThroughUrl(repositoryName);
+            file = fetchFromRemote(repositoryName, remoteUrl, groupId + "/" + artifactId + "/" + version + "/maven-metadata.xml.md5");
+        }
+
+        final File finalFile = file;
+        if (finalFile != null && finalFile.exists()) {
+            return (OutputStream outputStream) -> {
+                try (InputStream inputStream = new FileInputStream(finalFile)) {
                     int nextByte;
                     while ((nextByte = inputStream.read()) != -1) {
                         outputStream.write(nextByte);
@@ -344,8 +391,10 @@ public class RestResource {
                     outputStream.flush();
                     outputStream.close();
                 }
-            }
-        };
+            };
+        } else {
+            throw new WebApplicationException(404);
+        }
     }
 
     /**
@@ -366,13 +415,19 @@ public class RestResource {
             @PathParam("artifactId") String artifactId,
             @PathParam("version") String version) {
 
-        return (OutputStream outputStream) -> {
-            File repoDir = new File(application.getRootDirectory(), repositoryName);
-            File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
-                    + File.separator + "maven-metadata.xml.sha1");
+        File repoDir = new File(application.getRootDirectory(), repositoryName);
+        File file = new File(repoDir, groupId + File.separator + artifactId + File.separator + version
+                + File.separator + "maven-metadata.xml.sha1");
 
-            if (file.exists()) {
-                try (InputStream inputStream = new FileInputStream(file)) {
+        if (!file.exists() && isPullThroughEnabled(repositoryName)) {
+            String remoteUrl = getPullThroughUrl(repositoryName);
+            file = fetchFromRemote(repositoryName, remoteUrl, groupId + "/" + artifactId + "/" + version + "/maven-metadata.xml.sha1");
+        }
+
+        final File finalFile = file;
+        if (finalFile != null && finalFile.exists()) {
+            return (OutputStream outputStream) -> {
+                try (InputStream inputStream = new FileInputStream(finalFile)) {
                     int nextByte;
                     while ((nextByte = inputStream.read()) != -1) {
                         outputStream.write(nextByte);
@@ -380,8 +435,10 @@ public class RestResource {
                     outputStream.flush();
                     outputStream.close();
                 }
-            }
-        };
+            };
+        } else {
+            throw new WebApplicationException(404);
+        }
     }
 
     /**
@@ -405,6 +462,9 @@ public class RestResource {
             @PathParam("packaging") String packaging,
             byte[] data
     ) {
+        if (isPullThroughEnabled(repositoryName)) {
+            throw new WebApplicationException("Upload not allowed for pull-through repository", Response.Status.BAD_REQUEST);
+        }
 
         File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
@@ -452,6 +512,9 @@ public class RestResource {
             @PathParam("packaging") String packaging,
             byte[] data
     ) {
+        if (isPullThroughEnabled(repositoryName)) {
+            throw new WebApplicationException("Upload not allowed for pull-through repository", Response.Status.BAD_REQUEST);
+        }
 
         File directory = new File(application.getRootDirectory(), repositoryName + File.separator
                 + groupId.replaceAll("/", File.separator) + File.separator
@@ -496,6 +559,9 @@ public class RestResource {
             @PathParam("packaging") String packaging,
             byte[] data
     ) {
+        if (isPullThroughEnabled(repositoryName)) {
+            throw new WebApplicationException("Upload not allowed for pull-through repository", Response.Status.BAD_REQUEST);
+        }
 
         File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
@@ -540,6 +606,9 @@ public class RestResource {
             @PathParam("version") String version,
             byte[] data
     ) {
+        if (isPullThroughEnabled(repositoryName)) {
+            throw new WebApplicationException("Upload not allowed for pull-through repository", Response.Status.BAD_REQUEST);
+        }
 
         File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
@@ -583,6 +652,9 @@ public class RestResource {
             @PathParam("version") String version,
             byte[] data
     ) {
+        if (isPullThroughEnabled(repositoryName)) {
+            throw new WebApplicationException("Upload not allowed for pull-through repository", Response.Status.BAD_REQUEST);
+        }
 
         File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
@@ -626,6 +698,9 @@ public class RestResource {
             @PathParam("version") String version,
             byte[] data
     ) {
+        if (isPullThroughEnabled(repositoryName)) {
+            throw new WebApplicationException("Upload not allowed for pull-through repository", Response.Status.BAD_REQUEST);
+        }
 
         File directory = new File(application.getRootDirectory(), repositoryName
                 + File.separator
@@ -648,5 +723,46 @@ public class RestResource {
                 throw new WebApplicationException(ex, 500);
             }
         }
+    }
+
+    private boolean isPullThroughEnabled(String repositoryName) {
+        try {
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(new File(System.getProperty("user.home"), ".manorrock/persian/config.properties")));
+            return Boolean.parseBoolean(properties.getProperty(repositoryName + ".pullthrough.enabled", "false"));
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unable to read configuration", e);
+            return false;
+        }
+    }
+
+    private String getPullThroughUrl(String repositoryName) {
+        try {
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(new File(System.getProperty("user.home"), ".manorrock/persian/config.properties")));
+            return properties.getProperty(repositoryName + ".pullthrough.url", "");
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unable to read configuration", e);
+            return "";
+        }
+    }
+
+    private File fetchFromRemote(String repositoryName, String remoteUrl, String path) {
+        try {
+            URL url = new URL(remoteUrl + "/" + path);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            if (connection.getResponseCode() == 200) {
+                File tempFile = File.createTempFile("artifact", null);
+                try (InputStream inputStream = connection.getInputStream()) {
+                    Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                }
+                return tempFile;
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Unable to fetch from remote repository", e);
+        }
+        return null;
     }
 }
