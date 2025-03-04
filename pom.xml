@@ -16,12 +16,11 @@
         <jakarta.jakartaee-web-api.version>10.0.0</jakarta.jakartaee-web-api.version>
         <jaxb-runtime.version>4.0.3</jaxb-runtime.version>
         <junit.version>5.10.0</junit.version>
-        <oyena.version>23.5.0</oyena.version>
         <!-- other -->
         <java.version>21</java.version>
-        <piranha.distribution>webprofile</piranha.distribution>
+        <piranha.distribution>coreprofile</piranha.distribution>
         <piranha.httpPort>8080</piranha.httpPort>
-        <piranha.version>25.1.0</piranha.version>
+        <piranha.version>25.2.0</piranha.version>
         <!--<piranha.jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000</piranha.jvmArguments>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- plugins -->
@@ -94,19 +93,6 @@
                     <artifactId>angus-activation</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <!-- runtime -->
-        <dependency>
-            <groupId>com.manorrock.oyena.lifecycle</groupId>
-            <artifactId>oyena-lifecycle-action</artifactId>
-            <version>${oyena.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.manorrock.oyena.lifecycle</groupId>
-            <artifactId>oyena-lifecycle-cdi</artifactId>
-            <version>${oyena.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <!-- provided -->
         <dependency>
